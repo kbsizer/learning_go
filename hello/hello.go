@@ -26,6 +26,34 @@ func main() {
 	fmt.Printf("The hypotenuse of a right triangle with legs 10 feet long is %f feet.\n", Hypotenuse(10, 10))
 	fmt.Printf("The average of 75, 82 and 98 is %f.\n", Average(75, 82, 98))
 	fmt.Printf("Timezones (%T)\n\t%v\n\t%v\n\t%v\n", EST, EST, CST, PST)
+
+	// Illustrate value vs reference semantics of for..range
+	// In the first case, we make a copy of the array; in the
+	// second case we do not
+	sArray := [5]string{"Able", "Baker", "Charlie", "Dog", "Eagle"}
+
+	fmt.Printf("Before loop #1, sArray[2] = %s\n", sArray[2])
+
+	for i, s := range sArray {
+		if i == 2 {
+			sArray[i] = "CHANGED!"
+			fmt.Printf("LOOP 1: sArray[2] = %v\n", s)
+		}
+	}
+
+	fmt.Printf("After loop #1, sArray[2] = %s\n", sArray[2])
+
+	sArray = [5]string{"Able", "Baker", "Charlie", "Dog", "Eagle"}
+
+	for i := range sArray {
+		if i == 2 {
+			sArray[i] = "CHANGED!"
+			fmt.Printf("LOOP 2: sArray[2] = %v\n", sArray[2])
+		}
+	}
+
+	fmt.Printf("After loop #2, sArray[2] = %s\n", sArray[2])
+
 }
 
 // GetHello returns the content of helloText.
@@ -36,6 +64,11 @@ func GetHello() string {
 // Hypotenuse computes the length of the hypotenuse of a
 // right triangle having sides of the given lengths.
 func Hypotenuse(a, b float64) float64 {
+	//TEMP
+	if a == b {
+		fmt.Println("Inputs EQUAL")
+	}
+	//TEMP
 	return math.Sqrt(a*a + b*b)
 }
 
