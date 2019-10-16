@@ -64,6 +64,18 @@ func TestHypotenuse(t *testing.T) {
 	}
 }
 
+// BenchmarkHypotenuse illustrates how to benchmark a function in Go.
+func BenchmarkHypotenuse(b *testing.B) {
+	//var h float64
+	for n := 0; n < b.N; n++ {
+		f := float64(n)
+		a := 12.456 * f
+		b := 765.89 * f
+		Hypotenuse(a, b)
+	}
+	//fmt.Println(h)
+}
+
 func TestAverage(t *testing.T) {
 	type args struct {
 		values []float64
