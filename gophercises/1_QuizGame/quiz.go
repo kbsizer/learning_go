@@ -2,6 +2,8 @@
 //
 // Packages used
 //		log  -- logging -- https://www.datadoghq.com/blog/go-logging/
+//  Logging -- zerolog -- https://github.com/rs/zerolog   ($ go get github.com/rs/zerolog)
+//  Testing --
 //		flag -- command-line args -- https://blog.alexellis.io/5-keys-to-a-killer-go-cli/
 //      pflag -- replacement for Go's "flag" package (supports POSIX style flags)
 //               https://godoc.org/github.com/spf13/pflag#BoolVarP
@@ -19,7 +21,10 @@ import (
 	"time"
 
 	"github.com/spf13/pflag" //  replacement for Go's flag package, implementing POSIX style flags
+	"gopkgs.sas.com/zlog"    // level-based logger based on zerolog; $ go get gopkgs.sas.com/zlog
 )
+
+var logger = zlog.L()
 
 type questionAnswer struct {
 	question string
@@ -27,7 +32,7 @@ type questionAnswer struct {
 }
 
 func main() {
-	log.Print("Gophercise 1 - Quiz Game - https://gophercises.com/exercises/quiz")
+	logger.Info("Gophercise 1 - Quiz Game - https://gophercises.com/exercises/quiz")
 
 	// process command line args
 	var showHelp bool
@@ -42,7 +47,7 @@ func main() {
 	pflag.Parse()
 	if showHelp {
 		//NOTE: All this might be overkill because pflag can generate the bulk it (VERIFY THIS)
-		log.Fatal("Gophercise 1 - Quiz Game\n\n" +
+		logger.Fatal("Gophercise 1 - Quiz Game\n\n" +
 			"Usage:\n" +
 			"\t$ quiz [--help] [--file csvFile]\n" +
 			"where,\n" +
@@ -55,7 +60,7 @@ func main() {
 
 	defer f.Close()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 	csvReader := csv.NewReader(bufio.NewReader(f))
 	var questionsAndAnswers []questionAnswer
@@ -67,19 +72,18 @@ func main() {
 			break
 		}
 		if err != nil {
-			log.Fatal("line", lineNo, ":", err)
+			logger.Fatal("line", lineNo, ":", err)
 		}
 		if len(row) != 2 {
-			log.Fatal("line", lineNo, ": Expecting two values separated by a comma, but read:", row)
+			logger.Fatal("line", lineNo, ": Expecting two values separated by a comma, but read:", row)
 		}
-		if verbose {
-			log.Println("line", lineNo, ":", row)
+		logger.Debug("line", lineNo, ":", row)
 		}
 		questionsAndAnswers = append(questionsAndAnswers, questionAnswer{row[0], row[1]})
 	}
 	questionCount := len(questionsAndAnswers)
 	if verbose {
-		log.Println("Read", questionCount, "questions from", csvFilename, ". Contents of questionsAndAnswers:\n", questionsAndAnswers)
+		logger.Println("Read", questionCount, "questions from", csvFilename, ". Contents of questionsAndAnswers:\n", questionsAndAnswers)
 	}
 
 	// shuffle the questions
@@ -88,8 +92,10 @@ func main() {
 		questionsAndAnswers[i], questionsAndAnswers[j] = questionsAndAnswers[j], questionsAndAnswers[i]
 	})
 
+	var correctAnswers int
+
 	if version1 {
-		fmt.Println("\nGophercise 1 - Quiz Game - Version 1 (no timer)\n")
+		fmt.Printf("\nGophercise 1 - Quiz Game - Version 1 (no timer)\n\n")
 
 		// Query the user
 		var response string
@@ -97,13 +103,20 @@ func main() {
 			fmt.Printf("(%d) What is %s? ", i, qa.question)
 			fmt.Scanf("%s\n", &response)
 			if strings.EqualFold(qa.answer, response) { // case-insensitive string compare
-				fmt.Println("   Right!")
+				fmt.Println("\t\tRight!")
+				correctAnswers++
 			} else {
-				fmt.Println("   BZZZZZZZZZZZ!")
+				fmt.Println("\t\t\t\tBZZZZZZZZZZZ!")
 			}
 		}
 	} else {
 		maxTime := questionCount * 5 // 5 seconds per question
-		fmt.Println("\nGophercise 1 - Quiz Game - Version 2\nYOU HAVE", maxTime, "SECONDS... GO!!\n")
+		fmt.Printf("\nGophercise 1 - Quiz Game - Version 2\nYou will have %v seconds to answer %v qusetions... GO!!\n"+
+			"Press ENTER to begin.\n\n", maxTime, questionCount)
+
 	}
+
+	fmt.Printf("\n========= End of Quiz =========\n"+
+		"You answered %d out of %d correctly.\n"+
+		"Score: %d", correctAnswers, questionCount, 100*correctAnswers/questionCount)
 }
