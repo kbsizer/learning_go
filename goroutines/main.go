@@ -53,7 +53,7 @@ func main() {
 
 	// Version 1: no atomic access; very broken
 	var counter int
-	wg.Add(maxWorkers)
+	wg.Add(maxWorkers) // reset wait group
 	for i := 0; i < maxWorkers; i++ {
 		go func() {
 			for count := 0; count < 2; count++ {
@@ -71,7 +71,7 @@ func main() {
 
 	// Version 2: Using Atomic Operations --> see sync/atomic package
 	var counter64 int64
-	wg.Add(maxWorkers)
+	wg.Add(maxWorkers) // reset wait group
 	for i := 0; i < maxWorkers; i++ {
 		go func() {
 			for count := 0; count < 2; count++ {
@@ -80,6 +80,62 @@ func main() {
 			}
 			wg.Done()
 		}()
+	}
+	wg.Wait()
+
+	fmt.Print("\n\nVERSION 3\n\n")
+
+	// Version 3: Using Mutexes --> see sync/atomic package
+	mutex := &sync.Mutex{}
+	counter = 0        // reset counter
+	wg.Add(maxWorkers) // reset wait group
+	for i := 0; i < maxWorkers; i++ {
+		go func() {
+			for count := 0; count < 2; count++ {
+				mutex.Lock() // BEGIN Critical Section
+				{
+					value := counter
+					value++
+					fmt.Println(value)
+					counter = value
+				}
+				mutex.Unlock() // END Critical Section
+			}
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	fmt.Print("\n\nVERSION 4\n\n")
+
+	// Version 4: Using Read-Write Mutexes
+	rfMutex := &sync.RWMutex{}
+	counter = 0            // reset counter
+	wg.Add(2 * maxWorkers) // initialize wait group
+	// a group of readers
+	for i := 0; i < 2*maxWorkers; i++ {
+		go func(iAmAWriter bool) {
+			for count := 0; count < 2; count++ {
+				if iAmAWriter {
+					rfMutex.Lock() // BEGIN Critical Section
+					{
+						value := counter
+						value++
+						fmt.Println("WRITER found", value)
+						counter = value
+					}
+					rfMutex.Unlock() // END Critical Section
+				} else {
+					rfMutex.RLock() // BEGIN Critical Section
+					{
+						value := counter
+						fmt.Println("READER found", value)
+					}
+					rfMutex.RUnlock() // END Critical Section
+				}
+			}
+			wg.Done()
+		}(i%2 == 0)
 	}
 	wg.Wait()
 }
