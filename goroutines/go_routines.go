@@ -1,5 +1,6 @@
-// Demonstrates use of GOMAXPROCS and WaitGroup by spawning multiple
-// worker threads computing Pi.
+// Demonstrates use of Go Routines, GOMAXPROCS, WaitGroups,
+// critical sections, atomic operations, synchronization blocks, etc.
+// by spawning multiple worker threads computing Pi and other silliness.
 package main
 
 import (
