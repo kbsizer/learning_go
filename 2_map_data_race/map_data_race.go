@@ -1,7 +1,17 @@
-// Demonstrates:
-//      1) Maps in Go are NOT inherently thread-safe.  Even when threads are never touching the
-//         same key-value pair
-//      2) Go's built-in data race detection code for map access
+// map_data_race demonstrates the following:
+//    - Maps in Go are NOT inherently thread-safe.  Even when threads are never touching the
+//      same key-value pair
+//    - The use of -race (Go's built-in data race detection facility)
+//
+// Data races are among the most common and hardest to debug types of bugs in concurrent systems.
+// To help diagnose such bugs, Go includes a built-in data race detector. To use it, add the -race
+// flag to the go command:
+//    $ go test -race mypkg    // to test the package
+//    $ go run -race mysrc.go  // to run the source file
+//    $ go build -race mycmd   // to build the command
+//    $ go install -race mypkg // to install the package
+//
+// See: https://golang.org/doc/articles/race_detector.html
 package main
 
 import (
