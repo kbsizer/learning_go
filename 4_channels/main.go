@@ -7,12 +7,16 @@ import (
 )
 
 func main() {
-	fmt.Println("===== PART 1: worker waiting for a task =====")
+	fmt.Println("\n\n===== Section 10.2.1: worker waiting for a task =====")
 	waitForTask()
-	fmt.Println("===== PART 2: manager waiting on worker =====")
+	fmt.Println("\n\n===== Section 10.2.2: manager waiting on worker =====")
 	waitForResult()
-	fmt.Println("===== PART 3: worker sends signal without data =====")
+	fmt.Println("\n\n===== Section 10.2.3: worker sends signal without data =====")
 	waitForFinished()
+	fmt.Println("\n\n===== Section 10.3: pooling pattern =====")
+	pooling()
+	fmt.Println("\n\n===== Section 10.4.1: fanout, part 1 =====")
+	fanout()
 }
 
 // waitForTask: worker waits until handed a task
@@ -68,6 +72,64 @@ func waitForFinished() {
 
 	_, wd := <-ch // want for slgnal
 	fmt.Println("manager: signal received: WithDataFlag =", wd)
+
+	time.Sleep(time.Second)
+	fmt.Println("------------ done ---------")
+}
+
+//
+// of paper before they start
+func pooling() {
+	ch := make(chan string) // unbuffered (blocking) channel with string data
+	const employees = 2
+	for e := 1; e <= employees; e++ {
+		go func(emp int) {
+			// NOTE: We are ranging over a channel. This is essentially a channel RECEIVE
+			// (on a blocking channel).  Thus, we wait here until a signal arrives.
+			// The loop terminates when the channel's state changes from OPEN to CLOSED.
+			for p := range ch {
+				fmt.Printf("employee %d: received signal '%s'\n", emp, p)
+			}
+			fmt.Printf("employee %d: received shutdown signal\n", emp)
+		}(e)
+	}
+
+	// Simulated work loop (pass 10 work orders to our pool of employees)
+	const work = 10
+	for w := 0; w < work; w++ {
+		signal := fmt.Sprintf("work order #%d", w)
+		ch <- signal
+		fmt.Printf("manager: sent signal '%s'\n", signal)
+	}
+
+	close(ch)
+	fmt.Println("manager: sent shutdown signal")
+
+	time.Sleep(time.Second)
+	fmt.Println("------------ done ---------")
+}
+
+// manager parcels out work to 20 employees and wait for each to complete
+func fanout() {
+	employees := 20
+	ch := make(chan string, employees) // create a channel with a buffer size of 20 (fanout)
+
+	for e := 1; e <= employees; e++ {
+		go func(emp int) {
+			time.Sleep(time.Duration(rand.Intn(200)) * time.Millisecond)
+			signal := fmt.Sprintf("paper #%d", emp)
+			ch <- signal
+			fmt.Printf("employee #%d: sent '%s'\n", emp, signal)
+		}(e)
+	}
+
+	// manager
+	for employees > 0 {
+		p := <-ch
+		fmt.Println(p)
+		employees--
+		fmt.Printf("manager: received signal. Waiting on %d more.\n", employees)
+	}
 
 	time.Sleep(time.Second)
 	fmt.Println("------------ done ---------")
