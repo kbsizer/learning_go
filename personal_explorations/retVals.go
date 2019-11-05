@@ -2,32 +2,40 @@ package main
 
 import "fmt"
 
+// Return values in Go:
+//    	- Functions and Methods may return zero, one or N values
+//		- Function and Method invocations must either accept all return values or ignore all return values
+//		- An underscore may be used to accept-but-throw-away a return value
+//
+// Examples follow.
 func main() {
 	fmt.Println("retaining no values from function that returns one value")
 	oneRetVal()
 
 	fmt.Println("retaining one value from function that returns one value")
-	s1 := oneRetVal()
-	fmt.Println("oneRetVal() returned", s1)
+	retVal1 := oneRetVal()
+	fmt.Println("oneRetVal() returned", retVal1)
+
+	fmt.Println("retaining no values from function that returns two value")
+	twoRetVals()
 
 	fmt.Println("retaining 1st value from function that returns two values")
-	s2, _ := twoRetVals()
-	fmt.Println("twoRetVals() returned", s2)
+	retVal2, _ := twoRetVals()
+	fmt.Println("twoRetVals() returned", retVal2)
 
 	fmt.Println("retaining both values from function that returns two values")
-	s2_1, s2_2 := twoRetVals()
-	fmt.Println("twoRetVals() returned", s2_1, s2_2)
+	retVal2_1, retVal2_2 := twoRetVals()
+	fmt.Println("twoRetVals() returned", retVal2_1, retVal2_2)
 
 	fmt.Println("retaining 2nd value from function that returns two values")
-	_, s2_2 = twoRetVals()
-	fmt.Println("twoRetVals() returned", s2_2, "as second return value")
+	_, retVal2_2 = twoRetVals()
+	fmt.Println("twoRetVals() returned", retVal2_2, "as second return value")
 
 	fmt.Println("retaining 1st value from function that returns three values")
-	s3, _, _ := threeRetVals()
-	fmt.Println("threeRetVals() returned", s3)
+	retVal3, _, _ := threeRetVals()
+	fmt.Println("threeRetVals() returned", retVal3)
 
-	// RANGE
-
+	// RANGE with UNICODE CHARACTERS
 	msg := "abc日本語123"
 	for i, ch := range msg {
 		fmt.Printf("Character %#U starts at byte position %d\n", ch, i)
