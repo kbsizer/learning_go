@@ -42,7 +42,7 @@ func example1() {
 	// what happens if we try to retrieve that traceID value
 	// from the context value bag NOT using the proper key type
 	if _, ok := ctx.Value(0).(TraceID); !ok {
-		log.Fatal("TraceID not found!")
+		log.Println("FATAL: TraceID not found!")
 	}
 }
 
