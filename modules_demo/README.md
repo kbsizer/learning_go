@@ -23,7 +23,9 @@ Using/advocating the use of modules during the 1.11-1.12 “transition period”
 * Use Go version 1.13 or higher
 * Don’t define/depend on GOPATH 
 * Don’t define/depend on GO111MODULE
-* Ensure that each project has a **go.mod** file.  Create one using `go mod init` as follows:
+* Ensure that each project has a **go.mod** file.  Create one using `go mod init` 
+
+### Creating and using a go.mod file
 
 ```bash
 $ cd ~/go/learning_go/modules_demo
@@ -39,6 +41,50 @@ go 1.13
 $ go test
 PASS
 ok      modules_demo    0.383s
+```
+
+### Updating a dependency version and introducing a breaking change
+
+```bash
+# Before update (all is goodness and light)
+$ go test
+PASS
+ok      modules_demo    0.798s
+
+$ go list -m all
+modules_demo
+golang.org/x/text v0.3.2
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e
+rsc.io/quote v1.5.2
+rsc.io/sampler v1.3.0
+
+# get newer version of a dependency
+$ go get rsc.io/sampler
+go: finding rsc.io/sampler v1.99.99
+go: downloading rsc.io/sampler v1.99.99
+go: extracting rsc.io/sampler v1.99.99
+
+# rerun tests
+$ go test
+--- FAIL: TestHello (0.00s)
+    hello_test.go:8: Hello() = "99 bottles of beer on the wall, 99 bottles of beer, ...", want "Hello, world."
+FAIL
+exit status 1
+FAIL    modules_demo    0.372s
+
+# Uh-oh!  Find an older version that will work better for us
+$ go list -m -versions rsc.io/sampler
+rsc.io/sampler v1.0.0 v1.2.0 v1.2.1 v1.3.0 v1.3.1 v1.99.99
+
+# Try v1.3.1
+$ go get rsc.io/sampler@v1.3.1
+go: finding rsc.io/sampler v1.3.1
+go: downloading rsc.io/sampler v1.3.1
+go: extracting rsc.io/sampler v1.3.1
+
+$ go test                                 
+PASS
+ok      modules_demo    0.379s                # YAY! All happy again!
 ```
 
 
