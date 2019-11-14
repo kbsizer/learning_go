@@ -1,6 +1,6 @@
 # GOPATH and Modules
 
-##  Motivation
+## Motivation
 
 Various tutorials and posts recommend defining GOPATH, not defining GOPATH, putting projects in GOPATH and not putting projects in GOPATH.  This confused/bugged me no end.
 
@@ -25,6 +25,18 @@ Using/advocating the use of modules during the 1.11-1.12 “transition period”
 * Don’t define/depend on GO111MODULE
 * Ensure that each project has a **go.mod** file.  Create one using `go mod init` 
 
+### Commands for working with Go Modules
+
+**`go mod init`** -- creates a new module, initializing the `go.mod` file that describes it.
+
+**`go build`, `go test`,** *and other package-building commands* -- add new dependencies to `go.mod` as needed.****
+
+**`go list -m all`** -- prints the current module’s dependencies.
+
+**`go get`** -- changes the required version of a dependency (or adds a new dependency).
+
+**`go mod tidy`** -- removes unused dependencies.
+
 ### Creating and using a go.mod file
 
 ```bash
@@ -34,6 +46,7 @@ $ go mod init modules_demo
 go: creating new go.mod: module modules_demo
 
 $ cat go.mod
+
 module modules_demo
 
 go 1.13
@@ -85,6 +98,27 @@ go: extracting rsc.io/sampler v1.3.1
 $ go test                                 
 PASS
 ok      modules_demo    0.379s                # YAY! All happy again!
+```
+
+### Removing unused dependencies
+
+Neither `go build` nor `go test` will remove unused modules.  For that, use `go mod tidy`:
+
+```bash
+$ go list -m all
+example.com/hello
+golang.org/x/text v0.3.0
+rsc.io/quote v1.5.2                   # we're no longer using this guy
+rsc.io/quote/v3 v3.1.0
+rsc.io/sampler v1.3.1
+
+$ go mod tidy                         # exhaustively check all packages and remove unused modules
+
+$ go list -m all
+example.com/hello
+golang.org/x/text v0.3.0
+rsc.io/quote/v3 v3.1.0
+rsc.io/sampler v1.3.1
 ```
 
 

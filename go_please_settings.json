@@ -1,0 +1,37 @@
+{
+    "terminal.integrated.shell.windows": "c:\\Git\\bin\\bash.exe",
+    "editor.minimap.enabled": true,
+    "terminal.external.windowsExec": "C:\\Git\\git-bash.exe",
+    "go.coverOnSave": true,
+    "workbench.colorTheme": "Visual Studio Light",
+    "go.coverageDecorator": {
+        "type":"gutter",
+        "coveredHighlightColor": "rgba(64,128,128,0.5)",
+        "uncoveredHighlightColor": "rgba(255,64,64,0.25)",
+        "coveredGutterStyle": "blockblue",
+        "uncoveredGutterStyle": "blockred",
+      },
+      "workbench.startupEditor": "newUntitledFile",
+      "git.enableSmartCommit": true,
+      "git.autofetch": true,
+      "go.formatTool": "goimports",
+      "go.docsTool": "gogetdoc",
+      "editor.wordWrapColumn": 90,
+      "go.useLanguageServer": true,      
+      "[go]": {
+          "editor.snippetSuggestions": "none",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+              "source.organizeImports": true,
+          }
+      },
+      "gopls": {
+          "usePlaceholders": true, // add parameter placeholders when completing a function
+
+          // Experimental settings
+          "completeUnimported": true, // autocomplete unimported packages
+          "watchFileChanges": true,  // watch file changes outside of the editor
+          "deepCompletion": true,     // enable deep completion
+      },
+      "files.eol": "\n", // formatting only supports LF line endings
+}
