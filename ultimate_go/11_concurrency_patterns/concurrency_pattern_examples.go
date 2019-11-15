@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	log2 "github.com/kbsizer ??????" ?????????
 )
 
 // TraceID represents the trace ID.
@@ -181,9 +182,10 @@ func example5() {
 	}
 }
 
-//
-// ----------- begin Failure Detection Demo code ------------
-//
+// ----------- begin 11.2 Failure Detection Demo code ------------
+// Simulates multiple processes using a shared resource which
+// becomes unresponsive.
+// ---------------------------------------------------------------
 
 // device allows us to mock a device we use to persist log events
 type device struct {
@@ -208,7 +210,7 @@ func failureDetectionDemo() {
 	// equal to number of goroutines that will be logging
 	var d device
 	l := log.New(&d, "prefix", 0)
-	// generate goroutines
+	// generate goroutines to simulate our business processes
 	for i := 1; i <= grs; i++ {
 		go func(id int) {
 			for {
@@ -218,10 +220,18 @@ func failureDetectionDemo() {
 		}(i)
 	}
 
-	// we want to control the simulated disk blocking. Capture
-	// interrupt signals to toggle device issues. Use ctrl-z
-	// to kill the program.
+	// We want to control the simulated disk blocking.
+	// Capture interrupt signals (CTRL-C) and use it to toggle
+	// the device slowdown issue.
+	// NOTE: Use ctrl-z to kill the program.
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, os.Interrupt)
+
+	for {
+		<-sigChan
+		// we have a data race condition
+		// (keeping the example to avoid distracting from the main point)
+		d.problem = !d.problem
+	}
 
 }
