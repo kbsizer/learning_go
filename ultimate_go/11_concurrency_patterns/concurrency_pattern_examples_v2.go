@@ -5,13 +5,17 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
+
+	// "log"
 	"math/rand"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	//	log2 "github.com/kbsizer/learning_go/ultimate_go/11_concurrency_patterns/logger"
+	log "github.com/kbsizer/learning_go/ultimate_go/11_concurrency_patterns/logger"
 )
 
 // TraceID represents the trace ID.
@@ -35,7 +39,8 @@ func main() {
 	example5()
 
 	fmt.Printf("\n\n----------------- failureDetectionDemo -----------------\n\n")
-	failureDetectionDemo()
+	failureDetectionDemoV1()
+	failureDetectionDemoV2()
 }
 
 // example1 illustrates:
@@ -202,7 +207,42 @@ func (d *device) Write(p []byte) (n int, err error) {
 }
 
 // 11.2 Failure Detection
-func failureDetectionDemo() {
+func failureDetectionDemoV1() {
+	// number of goroutines writing to log
+	const grs = 10
+	// create a loggervalue with a buffer of capacity
+	// equal to number of goroutines that will be logging
+	var d device
+	// l := log.New(&d, "prefix", 0)
+	l := log.New(&d, grs)
+	// generate goroutines to simulate our business processes
+	for i := 1; i <= grs; i++ {
+		go func(id int) {
+			for {
+				l.Println(fmt.Sprintf("%d: log data", id))
+				time.Sleep(10 * time.Millisecond)
+			}
+		}(i)
+	}
+
+	// We want to control the simulated disk blocking.
+	// Capture interrupt signals (CTRL-C) and use it to toggle
+	// the device slowdown issue.
+	// NOTE: Use ctrl-z to kill the program.
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt)
+
+	for {
+		<-sigChan
+		// we have a data race condition
+		// (keeping the example to avoid distracting from the main point)
+		d.problem = !d.problem
+	}
+
+}
+
+// 11.2 Failure Detection
+func failureDetectionDemoV2() {
 	// number of goroutines writing to log
 	const grs = 10
 	// create a loggervalue with a buffer of capacity

@@ -15,7 +15,7 @@ const succeed = "\u2713" // checkmark
 const failed = "\u2717"  // "X"
 
 // TestDownload validates that the http Get function can download content.
-func TestDownload(t *testing.T) {
+func TestDownload_simple(t *testing.T) {
 	// setup
 	goodURL := "https://www.goinggo.net/post/index.xml"
 	badURL := "https://www.goinggo.net/bad_url/index.xml"
@@ -51,4 +51,35 @@ func assert(t *testing.T, msg string, expected interface{}, actual interface{}) 
 	} else {
 		t.Errorf("\t%s -- %s: Expected %v, got %v", failed, msg, expected, actual)
 	}
+}
+
+// TestDownload validates the http Get function.  It exercises multiple scenarios using a
+// TABLE-DRIVEN test.
+func TestDownload_tableDriven(t *testing.T) {
+	// define inputs and expectations
+	tests := []struct {
+		url        string
+		statusCode int
+	}{
+		{"https://www.goinggo.net/post/index.xml", http.StatusOK},
+		{"https://rss.cnn.com/rss/cnn_topstories.rss", http.StatusNotFound},
+	}
+
+	t.Log("GIVEN user wishes to download XML content from a URL...")
+	{
+		for i, tt := range tests {
+			t.Logf("\tTEST %d: WHEN checking %q for status code %d", i, tt.url, tt.statusCode)
+			{
+				resp, err := http.Get(tt.url)
+				if err != nil {
+					t.Fatalf("\t%s: Get call failed: %v", failed, err)
+				}
+				defer resp.Body.Close()
+				t.Logf("\t%v ", resp)
+
+				assert(t, "status code", tt.statusCode, resp.StatusCode)
+			}
+		}
+	}
+
 }

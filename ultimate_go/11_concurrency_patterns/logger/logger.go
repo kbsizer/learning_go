@@ -22,7 +22,7 @@ func New(w io.Writer, capacity int) *Logger {
 	go func() {
 		defer l.wg.Done()
 		for v := range l.ch {
-			fmt.Fprint(w, v)
+			fmt.Fprintln(w, v)
 		}
 	}()
 

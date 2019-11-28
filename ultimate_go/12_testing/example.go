@@ -1,4 +1,4 @@
-// Sample test to show how to write a basic unit test in Golang.
+// Package example1 illustrates techniques for writing unit tests in Golang.
 //
 // USING GO TEST
 //       $ go test
