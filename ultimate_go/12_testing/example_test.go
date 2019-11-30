@@ -72,7 +72,7 @@ func TestDownload_tableDriven(t *testing.T) {
 			{
 				resp, err := http.Get(tt.url)
 				if err != nil {
-					t.Fatalf("\t%s: Get call failed: %v", failed, err)
+					t.Fatalf("\t%s -- HTTP GET call failed: %v", failed, err)
 				}
 				defer resp.Body.Close()
 				t.Logf("\t%v ", resp)
