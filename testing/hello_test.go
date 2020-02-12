@@ -30,13 +30,13 @@ func TestGetHello(t *testing.T) {
 		name string
 		want string
 	}{
-		{"hello", "Hello, world"},
-		// {"bad", "not this"},      // demonstrate a failing test; check that tests are running
+		{"shouldSucceed", "Hello, world"},
+		{"this is what failure looks like", "not this"}, // demonstrate a failing test; check that tests are running
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := GetHello(); got != tt.want {
-				t.Errorf("GetHello() = '%v', want '%v'", got, tt.want)
+				t.Errorf("GetHello() => '%v', expected: '%v'", got, tt.want)
 			}
 		})
 	}
@@ -58,7 +58,7 @@ func TestHypotenuse(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Hypotenuse(tt.args.a, tt.args.b); got != tt.want {
-				t.Errorf("Hypotenuse() = '%v', want '%v'", got, tt.want)
+				t.Errorf("Hypotenuse() => '%v', expected: '%v'", got, tt.want)
 			}
 		})
 	}
@@ -85,7 +85,7 @@ func TestAverage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := Average(tt.args.values...); got != tt.want {
-				t.Errorf("Average() = %v, want %v", got, tt.want)
+				t.Errorf("Average() => '%v', expected: '%v'", got, tt.want)
 			}
 		})
 	}

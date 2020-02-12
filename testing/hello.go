@@ -33,6 +33,8 @@ func Average(values ...float64) float64 {
 	return sum / float64(len(values))
 }
 
+// newPrivateFuncThatIsNotTested should show up in coverage
+// reports as not exercised by tests.
 func newPrivateFuncThatIsNotTested() {
 	fmt.Println("No one called me from a test.")
 }
