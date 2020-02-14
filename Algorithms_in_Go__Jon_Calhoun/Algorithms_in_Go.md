@@ -206,3 +206,69 @@ golang.org/x/sys/windows/svc/mgr
 golang.org/x/sys/windows/svc/example
 ```
 
+## Appendix: How to resolve `exec: "gcc": executable file not found in %PATH%`
+
+### Error Message
+
+```bash
+$ cd /c/Go_Projects/learning_go/Algorithms_in_Go__Jon_Calhoun (master)
+$ go test ...
+# runtime/cgo
+exec: "gcc": executable file not found in %PATH%
+ok      archive/tar     (cached)
+ok      archive/zip     (cached)
+ok      bufio   (cached)
+ok      bytes   (cached)
+ok      compress/bzip2  (cached)
+ok      compress/flate  (cached)
+ok      compress/gzip   (cached)
+ok      compress/lzw    (cached)
+          :
+          :
+--- FAIL: TestInternalLinkerCgoExec (9.88s)
+    nm_test.go:111: building test executable failed: exit status 2 # command-line-arguments
+        exec: "gcc": executable file not found in %PATH%
+--- FAIL: TestExternalLinkerCgoExec (12.75s)
+    nm_test.go:111: building test executable failed: exit status 2 # command-line-arguments
+        exec: "gcc": executable file not found in %PATH%
+--- FAIL: TestCgoLib (12.79s)
+    nm_test.go:246: building test lib failed: exit status 2 # mylib
+        exec: "gcc": executable file not found in %PATH%
+          :
+          :          
+```
+
+### Resolution
+
+1. Download and install the latest Go (1.13.8 as of 2020-02-14)
+   https://golang.org/doc/install?download=go1.13.8.windows-amd64.msi
+
+2. Explicitly define GOPATH
+
+   ```bash
+   $ vi ~/.bashrc
+   # insert the following line
+   export GOPATH=/c/Users/kesize/go
+   ```
+
+3. (Re)install gotest
+
+   ```bash
+   $ go get -u github.com/rakyll/gotest
+   ```
+
+   
+
+### Notes
+
+* [cmd/go: 'go build' in module mode rebuilds vendored dependencies in GOROOT #27285](https://github.com/golang/go/issues/27285)
+
+* [cmd/go: `go test` complains about missing gcc (even if no tests exist, and only for certain imports) #27303](https://github.com/golang/go/issues/27303)
+
+* To install gcc, the GNU C Compiler, on Windows, use [TDM-GCC](http://tdm-gcc.tdragon.net/download). 
+
+
+
+
+
+
