@@ -4,7 +4,107 @@
 
 
 
-## Running specific tests
+## [Find a number in a list of numbers](https://courses.calhoun.io/lessons/les_algo_m01_05)
+
+```bash
+$ cd /c/Go_Projects/learning_go/Algorithms_in_Go__Jon_Calhoun/module01
+
+$ ll num_in_list*
+-rw-r--r-- 1 Ken 197609  236 Feb 11 22:21 num_in_list.go
+-rw-r--r-- 1 Ken 197609 1879 Feb 11 21:02 num_in_list_test.go
+
+$ grep TestNumInList *.go
+num_in_list_test.go:8:func TestNumInList(t *testing.T) {
+
+$ gotest -run=NumInList
+PASS
+ok      algo/module01   0.686s
+
+$ gotest -run=NumInList -v
+=== RUN   TestNumInList
+=== RUN   TestNumInList/([1_2_3_4_5],1)
+=== RUN   TestNumInList/([1_2_3_4_5],2)
+      :
+      :
+    --- PASS: TestNumInList/([8_2_5_4_1_8_9_3_0_88_23_44_123],6) (0.00s)
+    --- PASS: TestNumInList/([-1_-1_-1_-1_-1_-1_-1_-1],-1) (0.00s)
+    --- PASS: TestNumInList/([-1_-1_-1_-1_-1_-1_-1_-1],1) (0.00s)
+PASS
+ok      algo/module01   0.614s      
+```
+
+***Understanding the `for` loop in Go***
+
+```go
+// Prints out integers from 0 to len(mySlice)-1
+for i := range mySlice {
+    fmt.Println(i)
+}
+```
+
+...is equivalent to...
+
+```go
+// Prints out integers from 0 to len(mySlice)-1
+for i := 0; i < len(mySlice); i++ {
+    fmt.Println(i)
+}
+```
+
+...and not to be confused with...
+
+```go
+// Prints out the values in mySlice
+for _, value := range mySlice {
+    fmt.Println(value)
+}
+```
+
+
+
+## [Sum a list of numbers](https://courses.calhoun.io/lessons/les_algo_m01_06)
+
+Naïve attempt to test:
+
+```bash
+ $ gotest -run=Sum
+--- FAIL: TestFindTwoThatSum (0.00s)
+    --- FAIL: TestFindTwoThatSum/[1_2_3_4]_with_sum_7 (0.00s)
+```
+
+***What happened?***
+
+The argument passed to  `-run` is a regular expression.  In this case, any tests with a name containing "Sum" are run and that includes the tests for "Sum" and the tests for "TestFindTwoThatSum".
+
+Correct way to execute tests for "Sum" only:
+
+```bash
+$ gotest -run=TestSum
+PASS
+ok      algo/module01   0.541s
+```
+
+## [Reverse a string](https://courses.calhoun.io/lessons/les_algo_m01_07)
+
+**Runes**: When manipulating strings in Go, working with runes is usually a good idea.
+
+**For loop syntax** and **commas**
+
+Typed and untyped **nil**
+
+Adding names to **table-driven tests**
+
+***VSCode note: Format on Save***
+
+Usie the [Go plugin]( https://github.com/Microsoft/vscode-go), set ` "go.formatOnSave": true` .
+
+Another thing you should look at is changing "go.formatTool" from "go fmt" to "goimports" (and installing goimports). Having it manage your imports is very handy (though use with caution, double-check it's importing the right thing)
+
+To install goimports: ` go get golang.org/x/tools/cmd/goimports`
+
+Note: If there are errors, neither format nor import cleanup happens
+
+## Appendix: Running specific tests
 
 Using straight up go tooling...
 ```bash
@@ -21,20 +121,31 @@ ok      algo/module01   0.511s
 
 ```
 
+More `-run` examples...
 
+```go test -run &#39;&#39;      # Run all tests.
+go test -run ''      # Run all tests.
+go test -run Foo     # Run top-level tests matching "Foo", such as "TestFooBar".
+go test -run Foo/A=  # For top-level tests matching "Foo", run subtests matching "A=".
+go test -run /A=1    # For all top-level tests, run subtests matching "A=1".
+```
 
+For more details, see: https://golang.org/pkg/testing/
 
+and https://ieftimov.com/post/testing-in-go-go-test/
 
-## Appendix: How to resolve `Cannot find module for path .`
+## Appendix: Common Golang Environment Problems and Solutions
 
-### Error message
+###  `Cannot find module for path .`
+
+#### Error message
 
 ```bash
 $ go test
 build .: cannot find module for path .
 ```
 
-### What it means
+#### What it means
 
 Since no package (directory) was specified, the tooling assumes the current working directory (thus the dot) is where it should look for test files.  In the case above, however, all `.go` files were in subdirectories *under* the current directory and the build tool found nothing to build.
 
@@ -53,9 +164,7 @@ $ go test
 $ go test ./module01
 ```
 
-
-
-### Some history
+#### Some history
 
 | &nbsp;&nbsp;Go&nbsp;Version&nbsp;&nbsp; | Dependency Management                                        |
 | :-------------------------------------: | ------------------------------------------------------------ |
@@ -63,7 +172,7 @@ $ go test ./module01
 |                  1.11                   | Module support introduced: [Modules](https://golang.org/doc/go1.11#modules) are defined as a collection of [packages](https://golang.org/ref/spec#Packages) stored in a file tree with a `go.mod` file at its root. The `go.mod` file defines the module’s *module path*, which is also the import path used for the root directory, and its *dependency requirements*, which are the other modules needed for a successful build.<br>Behavior still defaults to using GOPATH if the working directory is within $GOPATH/src. [Modules](https://golang.org/doc/go1.11#modules) begin the journey to becoming Go’s [new dependency management system](https://blog.golang.org/versioning-proposal). |
 |               1.13 and up               | Starting in Go 1.13, module mode becomes the default for all development. |
 
-### Experimenting
+#### Experimenting
 
 The `go.mod` file when project first cloned
 
@@ -95,15 +204,15 @@ go 1.13
 
 Not exactly what I was expecting.  
 
-### Further Reading
+#### Further Reading
 
 [The Go Blog: Using Go Modules](https://blog.golang.org/using-go-modules)
 
 [Go without GOPATH (introduction to modules)](https://dev.to/dizdarevic/golang-without-a-path-47jp)
 
-## Appendix: How to resolve `go get: no install location`
+### `go get: no install location`
 
-### Error Message
+#### Error Message
 
 ```bash
 $ go get -t
@@ -131,7 +240,7 @@ total 14630
 -rw-r--r-- 1 Ken 197609      215 Feb 12 23:32 README.md
 ```
 
-### Resolution
+#### Resolution
 
 Need to initialize the module:
 
@@ -166,9 +275,7 @@ go: downloading github.com/go-playground/locales v0.13.0
 go: extracting github.com/go-playground/locales v0.13.0
 ```
 
-
-
-### More Information
+#### More Information
 
 ***From the `get` docs***
 
@@ -182,16 +289,16 @@ go: extracting github.com/go-playground/locales v0.13.0
 
 Note: When checking out or updating a package, get looks for a branch or tag that matches the locally installed version of Go. The most important rule is that if the local installation is running version "go1", get searches for a branch or tag named "go1". If no such version exists it retrieves the default branch of the package.
 
-## Appendix: How to resolve `path ... is not a package in module rooted at ...`
+### `path ... is not a package in module rooted at ...`
 
-### Error Message
+#### Error Message
 
 ```bash
 $ go get -u
 go get .: path C:\Go_Projects\learning_go\Algorithms_in_Go__Jon_Calhoun is not a package in module rooted at C:\Go_Projects\learning_go\Algorithms_in_Go__Jon_Calhoun
 ```
 
-### Resolution
+#### Resolution
 
 Use either `...` or `all`  to tell go to find all required packages recursively 
 
@@ -206,9 +313,9 @@ golang.org/x/sys/windows/svc/mgr
 golang.org/x/sys/windows/svc/example
 ```
 
-## Appendix: How to resolve `exec: "gcc": executable file not found in %PATH%`
+### `exec: "gcc": executable file not found in %PATH%`
 
-### Error Message
+#### Error Message
 
 ```bash
 $ cd /c/Go_Projects/learning_go/Algorithms_in_Go__Jon_Calhoun (master)
@@ -238,7 +345,7 @@ ok      compress/lzw    (cached)
           :          
 ```
 
-### Resolution
+#### Resolution
 
 1. Download and install the latest Go (1.13.8 as of 2020-02-14)
    https://golang.org/doc/install?download=go1.13.8.windows-amd64.msi
@@ -257,9 +364,8 @@ ok      compress/lzw    (cached)
    $ go get -u github.com/rakyll/gotest
    ```
 
-   
 
-### Notes
+#### Notes
 
 * [cmd/go: 'go build' in module mode rebuilds vendored dependencies in GOROOT #27285](https://github.com/golang/go/issues/27285)
 
