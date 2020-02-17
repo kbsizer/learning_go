@@ -86,23 +86,69 @@ ok      algo/module01   0.541s
 
 ## [Reverse a string](https://courses.calhoun.io/lessons/les_algo_m01_07)
 
-**Runes**: When manipulating strings in Go, working with runes is usually a good idea.
+This exercise gave us a change to play with
 
-**For loop syntax** and **commas**
+* Runes
+* **For loop syntax** and **commas**
+* Typed and untyped **nil**
+* Adding names to **table-driven tests**
 
-Typed and untyped **nil**
+Some things we learned...
 
-Adding names to **table-driven tests**
+* When manipulating strings in Go, working with **runes** is a good idea.
+
+* `range` over a `string` will iterate rune by rune (not byte-by-byte)
+
+
 
 ***VSCode note: Format on Save***
 
-Usie the [Go plugin]( https://github.com/Microsoft/vscode-go), set ` "go.formatOnSave": true` .
+* Using the [Go plugin]( https://github.com/Microsoft/vscode-go), set ` "go.formatOnSave": true` 
 
 Another thing you should look at is changing "go.formatTool" from "go fmt" to "goimports" (and installing goimports). Having it manage your imports is very handy (though use with caution, double-check it's importing the right thing)
 
 To install goimports: ` go get golang.org/x/tools/cmd/goimports`
 
 Note: If there are errors, neither format nor import cleanup happens
+
+## [The classic FizzBuzz problem](https://courses.calhoun.io/lessons/les_algo_m01_08)
+
+**TIP**: `fizz_buzz_test.go` illustrates how to build a test that checks what is written to STDOUT.
+
+```go
+osStdout := os.Stdout // keep backup of the real stdout
+os.Stdout = writer
+defer func() {
+	// Undo what we changed when this test is done.
+	os.Stdout = osStdout
+}()
+
+FizzBuzz(tc.n)
+writer.Close()
+
+var buf bytes.Buffer
+io.Copy(&buf, testStdout)
+got := buf.String()
+if got != tc.want {
+   :
+   :
+```
+
+**TIP**: How to execute a single case within a set of table-driven tests
+
+```bash
+$ gotest -run=FizzBuzz/N=5 -v
+=== RUN   TestFizzBuzz
+=== RUN   TestFizzBuzz/N=5
+--- PASS: TestFizzBuzz (0.00s)
+    --- PASS: TestFizzBuzz/N=5 (0.00s)
+PASS
+ok      algo/module01   0.396s
+```
+
+
+
+
 
 ## Appendix: Running specific tests
 
