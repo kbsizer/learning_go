@@ -2,7 +2,11 @@
 
 *NOTE: This README is a collection of my notes for this course. It is NOT a written version of the course, and as such it might not always make sense to you. If anyone wants to submit PRs to help turn this into a written version of the course I'm willing to work with you to do that, but for now it is just my notes.*
 
-## 01 - Intro
+[TOC]
+
+
+
+## Intro
 
 Welcome!
 
@@ -71,9 +75,10 @@ Sometimes we will look at multiple practice problems. Sometimes we will look at 
 But in this first module we will have a few videos where I cover some basic background information that I think might be useful before diving in.
 
 
-## 02 - What is an algorithm?
+## What is an algorithm?
 
 > a process or set of rules to be followed in calculations or other problem-solving operations, especially by a computer
+>
 > - Google Dictionary
 
 Algorithms don't have to be super complex mathematical equations.
@@ -92,7 +97,7 @@ Its like the office when Michael turns into a lake: <https://www.youtube.com/wat
 If you tell a computer to turn right into a lake, it will.
 
 
-## 03 - How to improve
+## How to improve
 
 Many people will "get" algorithms conceptually, but will struggle with coding them.
 This is usually a sign that they struggle with creating a set of unambiguous steps; they aren't skilled in translating algorithms into code.
@@ -156,8 +161,11 @@ As the course progresses we will probably start to use benchmarks too. I'm not g
 
 Lastly, the `solutions` directory will have code solutions (along with a copy of the tests) in case you need them. I'll never check solutions into the base directory so you have a good starting point with tests.
 
+---------------
 
-## 05 - Determine if a number is in a list [code]
+# Assignments
+
+## Determine if a number is in a list [code]
 
 Source file: `num_in_list.go`
 Function def: `NumInList(list []int, num int) bool`
@@ -177,7 +185,7 @@ NumInList(nil, 5) // false
 NumInList([]int{}, 5) // false
 ```
 
-## 06 - Sum all the numbers in a list [code]
+## Sum all the numbers in a list [code]
 
 Source file: `sum.go`
 Function def: `Sum(numbers []int) int`
@@ -198,7 +206,7 @@ Sum(nil) // 0
 Sum([]int{}) // 0
 ```
 
-## 07 - Reverse a string [code]
+## Reverse a string [code]
 
 Source file: `reverse.go`
 Function def: `Reverse(word string) string`
@@ -214,7 +222,7 @@ Reverse("alphabet") // "tebahpla"
 ```
 
 
-## 08 - FizzBuzz [code]
+## FizzBuzz [code]
 
 Source file: `fizz_buzz.go`
 Function def: `FizzBuzz(n int)`
@@ -233,7 +241,7 @@ FizzBuzz(15)
 ```
 
 
-## 09 - Decimal to another base [code]
+## Decimal to another base [code]
 
 Source file: `dec_to_base.go`
 Function def: `DecToBase(dec, base int) string`
@@ -304,7 +312,7 @@ DecToBase(14, 16) // "E"
 DecToBase(17, 16) // "11"
 ```
 
-## 10 - Another base to decimal [code]
+## Another base to decimal [code]
 
 Source file: `base_to_dec.go`
 Function def: `BaseToDec(value string, base int) int`
@@ -332,7 +340,7 @@ BaseToDec("11", 16) // 17
 ```
 
 
-## 11 - Any base to any base [code]
+## Any base to any base [code]
 
 Source file: `base_to_base.go`
 Function def: `BaseToBase(value string, base, newBase int) string`
@@ -383,7 +391,7 @@ Eg:
 3. Always return the index of the two values who have a minimal difference. Eg prefer the values 2, 2 over 1, 3 over 0, 4 for the sum of 4.
 
 
-## 13 - Prime factorization (primes provided) [code]
+## Prime factorization (primes provided) [code]
 
 Source file: `factor.go`
 Function def: `Factor(primes []int, number int) []int`
@@ -446,7 +454,7 @@ Fibonacci(7) // 13
 Fibonacci(14) // 377
 ```
 
-## 15 - Greatest common divisor [code]
+## Greatest common divisor [code]
 
 Source file: `gcd.go`
 Function def: `GCD(a, b int) int`
@@ -513,7 +521,7 @@ Step 3: Go to step 1
 
 This is a really good algorithm to know because GCD is often used in algorithmic contests. For instance, GCD was used in a qualifier for the most recent (2019) Google Code Jam. It is also a relatively simple algorithm that we can look at and then try to translate into code while exploring both recursive and iterative solutions (which we will do in a later module on recursion).
 
-## 16 - stdin and stdout
+## stdin and stdout
 
 Many problem solve sites have you reading from `stdin` and `stdout` or files.
 

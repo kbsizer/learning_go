@@ -148,7 +148,39 @@ ok      algo/module01   0.396s
 
 
 
+## Convert a decimal to any base (2-16)
 
+## Convert a number in any base (2-16) to Decimal
+
+## Convert a number from any base to any other base (2-16)
+
+## Find two numbers in a list that sum to a given amount
+
+## Factor a number
+
+## Fibonacci numbers
+
+## Greatest common divisor (GCD)
+
+## stdin and stdout
+
+
+
+------------------
+
+## Module 2: Sorting Algorithms
+
+## Bubble Sort
+
+## Insertion Sort
+
+## x
+
+
+
+
+
+------------------------------
 
 ## Appendix: Running specific tests
 

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)https://algorithmswithgo.com/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="description" content="Algorithms are a core component in a computer science education, and when taught properly they can help a developer improve his or her skills massively. In this course we will work to both understand how common computer algorithms work, as well as how to properly code each of them in Go.">
+    <meta name="keywords" content="golang go algorithms coding course gopher screencast video lesson">
+    <meta name="author" content="Jon Calhoun">
+
+    
+    <title>Algorithms with Go</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://algorithmswithgo.com/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://algorithmswithgo.com/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://algorithmswithgo.com/favicon-16x16.png">
+    <link rel="manifest" href="https://algorithmswithgo.com/site.webmanifest">
+    <link rel="mask-icon" href="https://algorithmswithgo.com/safari-pinned-tab.svg" color="#1c5b0f">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="@joncalhoun">
+    <meta property="og:url" content="https://algorithmswithgo.com">
+    <meta property="og:title" content="Algorithms with Go">
+    <meta property="og:description" content="Learn how algorithms work and how to implement them in Go">
+    <meta property="og:image" content="https://algorithmswithgo.com/og.png">
+    <meta property="og:image:width" content="1260">
+    <meta property="og:image:height" content="600">
+    <meta property="og:title" content="Algorithms with Go">
+    <meta property="og:description" content="Learn how algorithms work and how to implement them in Go">
+
+    <link href="./Algorithms with Go_files/styles.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/utilities.min.css" rel="stylesheet"> -->
+    <link href="./Algorithms with Go_files/css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Algorithms with Go_files/font-awesome.min.css" crossorigin="anonymous">
+    <script type="text/javascript" async="" src="./Algorithms with Go_files/recaptcha__en.js.download"></script><script src="./Algorithms with Go_files/api.js.download" async="" defer=""></script>
+     <script>
+       function onSubmit(token) {
+         document.getElementById("signup-form").submit();
+       }
+     </script>
+  <script charset="utf-8" src="./Algorithms with Go_files/button.93a0c25c2d2f3081c705c98c2d9dec0e.js.download"></script></head>
+
+  <body class="font-sans bg-white" data-gr-c-s-loaded="true">
+    <div class="w-full">
+      <div class="w-full border-black border-4">
+        <div class="w-full bg-cbrown-500 h-4 md:h-8 bg-marks-horizontal"></div>
+        <div class="w-full flex">
+          <div class="min-h-full bg-cbrown-500 w-4 md:w-8 bg-marks-vertical flex-none"></div>
+          <div class="w-full bg-cgreen-700 border-black border-4 relative flex-grow bg-chalkboard-graph">
+            <!-- Start of sale banner -->
+            <div class="mx-10 mt-10 -mb-8 bg-pink-200 border-4 border-pink-800 rounded-lg shadow sm:flex py-4 px-4">
+              <!-- <div class="px-2 pr-8 text-4xl text-center pb-4 sm:pb-0">👋</div> -->
+              <div class="text-pink-800 block">
+                <p class="">
+                  Just a heads up, my paid Go courses are discounted right now. You can <a class="underline" href="https://www.calhoun.io/extended-courses-discount/">read more here</a>.
+                </p>
+              </div>
+            </div>
+            <!-- End of sale banner -->
+
+            <div class="w-full text-center px-4 py-16 md:py-32 font-chalkboard text-white text-5xl md:text-8xl xl:text-10xl leading-normal md:leading-none" id="signup">
+              <span class="opacity-75 px-4">Algorithms with Go</span>
+              <div class="h-8 md:h-20"></div>
+              <div class="text-lg md:text-xl mx-auto">
+                <form id="signup-form" class="w-full max-w-md mx-auto" action="https://courses.calhoun.io/algorithms/sales/new" method="POST">
+                  <div class="block md:flex md:items-center border-b-2 border-transparent md:border-white py-2 px-2">
+                    <input class="appearance-none bg-transparent border-b-2 md:border-none w-full text-white opacity-75 mr-3 mb-4 md:mb-0 py-2 md:py-1 px-2 leading-tight focus:outline-none text-center md:text-left placeholder-cgreen-050 text-2xl" type="text" placeholder="you@example.com" aria-label="Email address" name="email" aria-required="" required="">
+                    <input type="hidden" id="referer" name="referer" value="">
+                    <input type="hidden" name="gotcha">
+                    <div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="./Algorithms with Go_files/anchor.html" width="256" height="60" role="presentation" name="a-bdhhtu516soi" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;" src="./Algorithms with Go_files/saved_resource.html"></iframe></div><button class="flex-shrink-0 bg-cblue-500 active:bg-cblue-700 hover:bg-cblue-600 border-cblue-600 hover:border-cblue-800 text-base border-b-2 text-white py-3 px-4 rounded font-sans g-recaptcha" type="submit" data-sitekey="6Lf51N4UAAAAAF2l9Mg1Wmitl5oGIlxf6AR03amS" data-callback="onSubmit">
+                      Sign Up (it's FREE)
+                    </button>
+                  </div>
+                </form>
+                <div class="mx-auto w-4/5 lg:w-1/2 pt-8 text-base text-white font-sans leading-normal italic">
+                  Algorithms with Go is free, but you need to provide a working
+                  email address to gain access. I won't spam you and
+                  unsubscribing is very easy.
+                </div>
+              </div>
+            </div>
+            <img src="./Algorithms with Go_files/chalkboard-shadow.svg" class="hidden lg:block md:absolute top-0 right-0 h-full min-h-full z-0">
+            <img src="./Algorithms with Go_files/eraser_chalk.svg" class="absolute bottom-0 left-0 w-48 ml-2 -mb-1 z-0">
+            <!--
+            <div class="w-full text-center pt-20 font-chalkboard text-white opacity-75 text-10xl leading-none">
+              Algorithms
+            </div>
+            <div class="w-full text-center py-8 font-chalkboard text-white opacity-75 text-7xl leading-none">
+              with
+            </div>
+            <div class="w-full text-center pb-20 font-chalkboard text-white opacity-75 text-12xl leading-none">
+              Go
+            </div>
+          --></div>
+          <div class="min-h-full bg-cbrown-500 w-4 md:w-8 bg-marks-vertical-v2 flex-none"></div>
+        </div>
+        <div class="w-full bg-cbrown-500 h-4 md:h-8 bg-marks-horizontal-v2"></div>
+      </div>
+      <div class="w-full px-12 py-12 pb-20 text-grey-600">
+        <h1 class="text-grey-700 text-2xl md:text-4xl font-serif italic pt-8 pb-2">
+          "I understand how basic algorithms work, but I can't actually
+          implement them in code"
+        </h1>
+        <p class="text-lg md:text-xl py-4 leading-normal">
+          <strong>Don't worry, you aren't alone!</strong> Not everyone will
+          admit it, but many developers feel exactly what you are feeling when
+          they get started with coding, algorithms, and more.
+        </p>
+        <img src="./Algorithms with Go_files/ada.svg" class="block w-full py-4 md:py-2 md:block md:mt-2 md:pl-12 md:float-right md:w-2/5 md:max-w-sm">
+        <p class=" text-lg md:text-xl py-4 leading-normal">
+          Whether you are a CS student at university, self-learning at home, or
+          something in between, the scenario is nearly always the same. First
+          you start to learn the algorithm, and at a high level it all seems to
+          make sense. You can even walk through the algorithm on paper, showing
+          what steps should be taken and how the state changes as the algorithm
+          is used. And then when you sit down to code it everything seems to
+          fall apart...
+        </p>
+        <ul class=" text-lg md:text-xl py-4 px-2 leading-normal list-inside">
+          <li class="py-2 pl-2 italic font-serif">
+            ↣ How do I write code that swaps two values?
+          </li>
+          <li class="py-2 pl-2 italic font-serif">
+            ↣ What the heck are bytes and runes? I just want to reverse my
+            string!
+          </li>
+          <li class="py-2 pl-2 italic font-serif">
+            ↣ How do I tell my code to only consider half of the list?
+          </li>
+          <li class="py-2 pl-2 italic font-serif">
+            ↣ Why is my graph algorithm using non-existent edges in this graph?
+          </li>
+        </ul>
+        <p class=" text-lg md:text-xl py-4 leading-normal">
+          And the list goes on and on and on...
+        </p>
+        <p class=" text-lg md:text-xl py-4 leading-normal">
+          Rather than running into a single problem that you can work out, what
+          typically happens is you get overwhelmed with smaller challenges. You
+          need to figure out how to do all these litle details right, and
+          without every single one being implemented correctly, your code will
+          never work.
+        </p>
+        <p class=" text-lg md:text-xl py-4 leading-normal">
+          <strong>But don't worry!</strong> This doesn't mean you aren't smart
+          enough, or math-oriented enough, or anything else like that. It simply
+          means you need some practice and guidance.
+        </p>
+      </div>
+      <div class="w-full px-12 py-12 pb-40 bg-cblue-600 text-cblue-050 skew-r">
+        <div class="skew-l">
+          <h1 class="text-white text-2xl md:text-4xl pt-12 pb-4">
+            You <em>can</em> learn to code algorithms, regardless of your
+            background!
+          </h1>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            I'm going to let you in a little secret - learning to code
+            algorithms has more to do with how you are taught than with the
+            actual material.
+          </p>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            Take me for example. If you were to give me a big ol' math proof for
+            an algorithm, I wouldn't know where to start. There was a time long
+            ago that I might have puzzled it out, but I haven't looked at math
+            like that in forever. I would simply be lost.
+          </p>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            On the other hand, if you had someone explain how the algorithm
+            worked without getting caught up in fancy terminology and instead
+            focusing on what is actually happening and why, I'd probably start
+            to get it.
+          </p>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            Everyone learns in a different way, but there are a few common
+            approaches that I have found always help people comprehend
+            algorithms more successfully:
+          </p>
+          <ul class="text-lg md:text-xl py-4 px-2 leading-normal list-inside list-decimal">
+            <img src="./Algorithms with Go_files/dijkstra.svg" class="hidden md:block md:mt-2 md:pl-12 md:float-right md:w-1/2 md:max-w-lg">
+            <li class="py-4 pl-2 font-serif">
+              <span class="text-corange-100 font-bold">Use visual aids.</span> Learning how a sorting algorithm
+              works? Demonstrate it with a deck of cards. Doing a graph? Draw it
+              on a chalkboard and explain what is happening.
+            </li>
+            <img src="./Algorithms with Go_files/dijkstra.svg" class="py-4 pb-8 block md:hidden">
+            <li class="py-4 pl-2 font-serif">
+              <span class="text-corange-100 font-bold">Watch someone code the algorithm.</span> Before even
+              considering attempting it yourself, watch someone actually code
+              it. When learning about an algorithm conceptually there are just
+              too many details that can be glossed over, but when you code it -
+              and I don't mean pseudo-code - nothing can be skimmed over and
+              little details are far less likely to catch you off gaurd. You
+              will also learn many tips and tricks from whoever is coding it
+              that you would never think to ask about when learning about an
+              algorithm without code.
+            </li>
+            <li class="py-4 pl-2 font-serif">
+              <span class="text-corange-100 font-bold">Practice!</span> No matter how well you think you
+              understand an algorithm, you should try to code it yourself. Then
+              find a few problems that use the algorithm and try to solve those.
+              Be sure to write the algorithm from scratch each time.
+            </li>
+            <li class="py-4 pl-2 font-serif">
+              <span class="text-corange-100 font-bold">Explore non-obvious applications.</span> Almost every
+              algorithm can be applied to non-obvious problems in order to sovle
+              them. Exploring these helps improve your ability to discern what
+              algorithms might help with each problem you face as a developer.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="w-full px-12 py-8 md:pt-24 text-grey-600">
+        <div class="block md:flex">
+          <img src="./Algorithms with Go_files/floyd.svg" class="w-full md:w-1/3 flex-shrink-0 pr-16 pb-8 md:pb-0 md:max-w-sm">
+          <div class="">
+            <h1 class="text-2xl md:text-4xl pt-8 pb-4 text-grey-700">
+              I'm going to teach you Algorithms with Go!
+            </h1>
+            <p class="text-lg md:text-xl py-4 leading-normal">
+              In this course I am going to use all four techniques described
+              above to help you learn how algorithms work, how to code them, and
+              more importantly, we will learn how to take any abstract idea and
+              quickly translate it into code.
+            </p>
+            <p class="text-lg md:text-xl py-4 leading-normal">
+              By the end of this course you might not have a CS degree, but you
+              will probably understand core computer science algorithms, data
+              structures, and more as well as a college graduate. And we are
+              going to do it through lots of coding.
+            </p>
+            <p class="text-lg md:text-xl py-4 leading-normal">
+              You will watch me explain then code an algorithm. You will code
+              the algorithms yourself. And for the later problems you will even
+              find additional practice problems that you can try on your own
+              then watch me solve them (<em>in case you get stuck</em> 😉).
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full px-12 py-8 md:pt-0 pb-32 bg-white text-grey-600">
+        <div class="">
+          <h1 class="text-2xl md:text-4xl mt-12 mb-4 font-serif italic text-grey-700">
+            "But I won't ever use these algorithms!"
+          </h1>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            While you may not use every algorithm you learn here directly, you
+            will use the knowledge you gain taking this course. For instance,
+            your ability to take an idea you are discussing with peers and
+            translate it into code will improve, your ability to tackle silly
+            interview questions will improve, and you will have a better
+            understanding for how the algorithms you are using might impact your
+            code's performance.
+          </p>
+          <p class="text-lg md:text-xl py-4 leading-normal">
+            But even if all those things weren't true, algorithms are a ton of
+            fun when approached in the right way!
+          </p>
+        </div>
+      </div>
+      <div class="w-full px-4 md:pb-48 bg-grey-050 skew-l text-grey-700">
+        <div class="skew-r">
+          <div class="md:flex md:items-end pb-8">
+            <div class="pt-24">
+              <h1 class="px-8  text-2xl md:text-4xl font-sans pb-4 text-grey-800">
+                What is in the course?
+              </h1>
+              <p class="px-8  text-lg md:text-xl py-4 leading-normal">
+                Algorithms with Go is living course. That means I will continue
+                adding new modules (<em>collections of videos covering related topics</em>) to the course every so often. Exactly how often new conten
+                will be added will depend on how much free time I have 😁
+              </p>
+            </div>
+            <img src="./Algorithms with Go_files/pythagoras.svg" class="flex-shrink-0 md:w-1/4 md:max-w-sm">
+          </div>
+          <div class="mx-6 bg-white mt-4 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              Module 01 - Getting started with Algorithms
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Module 01 is available now and focuses on getting a feel for how
+                the course will go. We will look at a few straight forward
+                problems, code solutions to them, and then run tests to make
+                sure we completed them correctly.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                As we progress into the later problems in this module we will
+                learn a few algorithms - like the
+                <a class="underline" href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclidean algorithm</a>
+                - but even then we will limit each algorithm to one or two
+                implementations.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Below is a listing of all the video lessons currently in this
+                module.
+              </p>
+              <div>
+                <div class="flex flex-wrap">
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_01.png">
+                    <p>1. Introduction</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_02.png">
+                    <p>2. What is an Algorithm?</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_03.png">
+                    <p>3. How to improve</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_04.png">
+                    <p>4. How to use the course materials</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_05.png">
+                    <p>5. Find a number in a list of numbers</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_06.png">
+                    <p>6. Sum a list of numbers</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_07.png">
+                    <p>7. Reverse a string</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_08.png">
+                    <p>8. The classic FizzBuzz problem</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_09.png">
+                    <p>9. Convert a decimal to any base (2-16)</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_10.png">
+                    <p>10. Convert a number in any base (2-16) to a decimal</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_11.png">
+                    <p>11. Convert a number from any base to any other base (2-16)</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_12.png">
+                    <p>12. Find two numbers in a list that sum to a given amount</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_13.png">
+                    <p>13. Factor a number (primes provided)</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_14.png">
+                    <p>14. Fibonacci numbers</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_15.png">
+                    <p>15. Greatest common divisor (GCD)</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_m01_15.png">
+                    <p>16. stdin and stdout</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mx-6 bg-white mt-12 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              Module 02 - The many ways to sort
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Module 02 isn't available yet, but I am working on it now and hope to release it soon.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                In this module we start to explore some of the sorting algorithms that exist. We will also start to examine how to do things like reverse a sorting order, recursion, divide and conquer, and we will briefly talk about Big O. If none of that makes sense to you, don't worry! We cover it all in the videos.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Below is a listing of all the video lessons currently planned for this module. When you see the <code class="bg-grey-100 text-cgreen-700 font-mono text-base py-1 px-1">[algo]</code> tag this means the video will focus on explaining the algorithm, while videos tagged with <code class="bg-grey-100 text-cgreen-700 font-mono text-base py-1 px-1">[code]</code> will focus on implementing the algorithm with Go code.
+              </p>
+              <div class="opacity-75">
+                <div class="flex flex-wrap">
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>1. Why sorting algorithms?</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>2. Bubble sort [algo]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>3. Bubble sort [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>4. Insertion sort [algo]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>5. Insertion sort [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>6. Binary search [algo]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>7. Binary search [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>8. Insertion sort with binary search [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>9. Recursion</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>10. Divide and conquer</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>11. Merge sort [algo]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>12. Merge sort [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>13. Merge sort with goroutines [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>14. Quicksort [algo]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>15. Quicksort [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>16. Big O</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>17. Benchmarking some sorting algorithms [code]</p>
+                  </div>
+                  <div class="section-video md:w-1/3">
+                    <img class="w-full" src="./Algorithms with Go_files/les_algo_todo.png">
+                    <p>18. Combining algorithms [code]</p>
+                  </div>
+                </div>
+              </div>
+              <div class="h-12"></div>
+            </div>
+          </div>
+          <div class="mx-6 bg-white mt-12 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              Module 03 - Basic data structures
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Module 03 isn't available yet, but I plan to work on it in the near future.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                This module focuses on learning about some of the first data structures you will need to learn. The title calls them basic, but that is a relative term - they are basic compared to some of the more complex data structures we will look at in future modules. But that doesn't mean they are too complicated to understand!
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Some examples of algorithms we may explore include: linked lists, doubly linked lists, stacks, queues, sets, binary trees, hash tables, priority queues (heaps), and maybe a few others.
+              </p>
+              <div class="opacity-75 hidden">
+                <div class="flex flex-wrap">
+                </div>
+              </div>
+              <div class="h-12"></div>
+            </div>
+          </div>
+          <div class="mx-6 bg-white mt-12 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              Module 04 - Greedy algorithms
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Module 04 isn't available yet, but I plan to work on it in the near future.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                This module focuses on learning about greedy algorithms. I don't expect it to be incredibly large, but I want to give students a sense of what greedy algorithms work and how they can code them. I also want to show how some things can seem greedy but really aren't to help you avoid those mistakes.
+              </p>
+              <div class="h-12"></div>
+            </div>
+          </div>
+          <div class="mx-6 bg-white mt-12 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              Module 05 - Graph theory
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Module 05 isn't available yet, and likely will take a few months to be released.
+              </p>
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                Graphs are pretty neat because you can represent all sorts of real-world scenarios as a graph. For instance, you could use graph theory to map the route you take to work, or you could use it to solve those <a href="https://justpuzzles.files.wordpress.com/2012/07/foto-shunting-puzzle-ipad.png" class="underline">sliding block games</a> in the minimum number of moves.
+              </p>
+              <div class="h-12"></div>
+            </div>
+          </div>
+          <div class="mx-6 bg-white mt-12 rounded text-grey-600">
+            <h2 class="text-cblue-700 text-xl md:text-3xl font-sans px-4 pt-8 pb-2 mb-4 border-b-2 border-dotted border-cblue-200">
+              And many more modules!
+            </h2>
+            <div class="px-6 pb-12">
+              <p class="text-lg md:text-xl py-2 leading-normal">
+                I have plans for ~10 modules diving into subjects like dynamic programming, advanced data structures (red-black trees, etc), more advanced graph theory, and more, but it is going to take some time to get there. If you want to help expedite the process,  sales from my <a href="https://www.calhoun.io/courses" class="underline">paid courses</a> help me allocate more time for these courses. The more sales I make, the less time I have to spend doing paid work and the more time I can spend on these free courses!
+              </p>
+              <div class="h-12"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-cgreen-600 text-center skew-l px-12">
+        <div class="skew-r md:flex md:items-center py-8">
+          <div class="flex-grow">
+            <img src="./Algorithms with Go_files/einstein.svg" class="md:pr-12 py-8 sm:max-w-xs md:max-w-sm mx-auto">
+          </div>
+          <div class="flex-shrink-0">
+            <h1 class="text-white text-3xl md:text-4xl font-serif">
+              Ready to learn?
+            </h1>
+            <p class="text-white text-lg md:text-xl py-2 leading-normal">
+              The signup form is
+              <a class="underline" href="https://algorithmswithgo.com/#signup">up that way ☝️</a> and it's
+              free to sign up!
+            </p>
+          </div>
+          <div class="flex-grow">
+        </div>
+        <div class="h-24"></div>
+      </div>
+    </div>
+    <div class="w-full bg-cgreen-700 text-white">
+      <div class="max-w-5xl mx-auto py-40 text-grey-lightest flex items-end">
+        <div class="w-full px-8 md:pr-0 md:w-2/3">
+          <div class="flex">
+            <h1 class="text-4xl font-chalkboard text-white my-4 opacity-75 border-b-2 border-dashed border-white">
+              About the Author
+            </h1>
+          </div>
+          <p class="py-2">
+            Jon Calhoun is a full stack web developer who teaches about Go, web
+            development, testing, algorithms, and anything else he finds
+            interesting. He spoke at the
+            <a class="underline" href="http://gothamgo.com/">GothamGo</a>
+            conference about focusing on simplicity when writing software and is
+            a panelist on the
+            <a href="https://changelog.com/gotime" class="underline">Go Time</a>
+            podcast.
+          </p>
+          <p class="py-2">
+            Previously, Jon founded EasyPost, a shipping API that many fortune
+            500 companies use to power their shipping infrastructure. Before
+            that he worked at Google as a software engineer. Before that he
+            studied computer science at UCF.
+          </p>
+          <p class="py-2">
+            You can find more of Jon's work, including other FREE courses and
+            tutorials he has created, below.
+          </p>
+          <ul class="list-reset leading-normal text-xl py-2 mb-6">
+            <li class="px-4 py-1">
+              <span class="text-yellow-400 text-lg pr-2"><i class="fa fa-star" aria-hidden="true"></i></span>
+              <a class="text-white hover:text-yellow-300" href="https://gophercises.com/">Gophercises</a>
+              <span class="text-blue-light text-base italic opacity-50">(FREE course)</span>
+            </li>
+            <li class="px-4 py-1">
+              <span class="text-yellow-400 text-lg pr-2"><i class="fa fa-star" aria-hidden="true"></i></span>
+              <a class="text-white hover:text-yellow-300" href="https://www.usegolang.com/">Web Development with Go</a>
+            </li>
+            <li class="px-4 py-1">
+              <span class="text-yellow-400 text-lg pr-2"><i class="fa fa-star" aria-hidden="true"></i></span>
+              <a class="text-white hover:text-yellow-300" href="https://www.testwithgo.com/">Test with Go</a>
+            </li>
+            <li class="px-4 py-1">
+              <span class="text-yellow-400 text-lg pr-2"><i class="fa fa-star" aria-hidden="true"></i></span>
+              <a class="text-white hover:text-yellow-300" href="https://www.calhoun.io/">Calhoun.io</a>
+            </li>
+            <li class="px-4 py-1">
+              <span class="text-yellow-400 text-lg pr-2"><i class="fa fa-star" aria-hidden="true"></i></span>
+              <a class="text-white hover:text-yellow-300" href="https://errorsingo.com/">Errors in Go</a>
+            </li>
+          </ul>
+          <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="twitter-follow-button twitter-follow-button-rendered" style="position: static; visibility: visible; width: 255px; height: 28px;" title="Twitter Follow Button" src="./Algorithms with Go_files/follow_button.6787510241df65d128e2b60207ad4c25.en.html" data-screen-name="joncalhoun"></iframe>
+          <script async="" src="./Algorithms with Go_files/widgets.js.download" charset="utf-8"></script>
+        </div>
+        <div class="hidden md:block md:flex-grow"></div>
+        <div class="hidden md:block md:w-1/4 md:mr-4 relative">
+          <img class="rounded-full" src="./Algorithms with Go_files/avatar.png">
+          <!-- <img class="p-1 opacity-75" src="https://www.usegolang.com/images/jon_kiteboarding.png"> -->
+        </div>
+      </div>
+    </div>
+    <div class="w-full bg-cgreen-800 px-12 py-12 pb-8 text-sm text-white text-center">
+      <p class="pb-2">
+        Algorithms with Go was created by me -
+        <a href="https://twitter.com/joncalhoun" class="underline">@joncalhoun</a>
+      </p>
+      <p class="pb-2">
+        The Gophers were designed by
+        <a href="https://twitter.com/adrianpgl" class="underline">Adrián Pérez</a>
+        of
+        <a href="https://friendsofgo.tech/" class="underline">Friends of Go</a>.
+        They are inspired by the original Go Gopher created by Renee French.
+      </p>
+      <p class="pb-4 italic">
+        I am all for giving back to the community, but the Gophers used here are
+        part of my course branding and I paid real money to have them designed.
+        They are not publicly licensed, and I ask that you do not use them in
+        other projects, websites, or anywhere else without first asking for my
+        permission. Thanks!
+      </p>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      document.getElementById("referer").value = urlParams.get("referer");
+      // document.getElementById("referer").value = window.location.pathname;
+    </script>
+    <!-- <script src="https://gumroad.com/js/gumroad.js"></script> -->
+  
+
+</div><iframe scrolling="no" frameborder="0" allowtransparency="true" src="./Algorithms with Go_files/widget_iframe.6787510241df65d128e2b60207ad4c25.html" title="Twitter settings iframe" style="display: none;"></iframe><div style="visibility: hidden; position: absolute; width: 100%; top: -10000px; left: 0px; right: 0px; transition: visibility 0s linear 0.3s, opacity 0.3s linear 0s; opacity: 0;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.5;"></div><div style="margin: 0px auto; top: 0px; left: 0px; right: 0px; position: absolute; border: 1px solid rgb(204, 204, 204); z-index: 2000000000; background-color: rgb(255, 255, 255); overflow: hidden;"><iframe title="recaptcha challenge" src="./Algorithms with Go_files/bframe.html" name="c-bdhhtu516soi" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox" style="width: 100%; height: 100%;"></iframe></div></div></body></html>
