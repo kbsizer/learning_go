@@ -117,7 +117,7 @@ This whole first module focuses on simpler algorithms, but the actual algorithms
 
 The goal of this first module is to teach you to practice so that you can improve quickly and efficiently. This will be necessary to get through all the later modules.
 
-## 04 - How to use the provided materials
+## How to use the provided materials
 
 *NOTE: This README is a collection of my notes for this course. It is NOT a written version of the course, and as such it might not always make sense to you. If anyone wants to submit PRs to help turn this into a written version of the course I'm willing to work with you to do that, but for now it is just my notes.*
 
@@ -163,9 +163,9 @@ Lastly, the `solutions` directory will have code solutions (along with a copy of
 
 ---------------
 
-# Assignments
+## Assignments
 
-## Determine if a number is in a list [code]
+### Determine if a number is in a list [code] DONE
 
 Source file: `num_in_list.go`
 Function def: `NumInList(list []int, num int) bool`
@@ -185,7 +185,7 @@ NumInList(nil, 5) // false
 NumInList([]int{}, 5) // false
 ```
 
-## Sum all the numbers in a list [code]
+### Sum all the numbers in a list [code] DONE
 
 Source file: `sum.go`
 Function def: `Sum(numbers []int) int`
@@ -206,7 +206,7 @@ Sum(nil) // 0
 Sum([]int{}) // 0
 ```
 
-## Reverse a string [code]
+### Reverse a string [code] DONE
 
 Source file: `reverse.go`
 Function def: `Reverse(word string) string`
@@ -221,8 +221,7 @@ Reverse("ca t") // "t ac"
 Reverse("alphabet") // "tebahpla"
 ```
 
-
-## FizzBuzz [code]
+### FizzBuzz [code] DONE
 
 Source file: `fizz_buzz.go`
 Function def: `FizzBuzz(n int)`
@@ -241,7 +240,7 @@ FizzBuzz(15)
 ```
 
 
-## Decimal to another base [code]
+### Decimal to another base [code]  <====
 
 Source file: `dec_to_base.go`
 Function def: `DecToBase(dec, base int) string`
@@ -312,7 +311,7 @@ DecToBase(14, 16) // "E"
 DecToBase(17, 16) // "11"
 ```
 
-## Another base to decimal [code]
+### Another base to decimal [code]
 
 Source file: `base_to_dec.go`
 Function def: `BaseToDec(value string, base int) int`
@@ -340,7 +339,7 @@ BaseToDec("11", 16) // 17
 ```
 
 
-## Any base to any base [code]
+### Any base to any base [code]
 
 Source file: `base_to_base.go`
 Function def: `BaseToBase(value string, base, newBase int) string`
@@ -354,7 +353,7 @@ BaseToBase("E", 16, 2) // "1110"
 BaseToBase("8831A383B", 12, 16) // "DEADBEEF"
 ```
 
-## 12 - Find two that sum [code]
+### Find two that sum [code]
 
 Source file: `find_two_that_sum.go`
 Function def: `FindTwoThatSum(numbers []int, sum int) (int, int)`
@@ -391,7 +390,7 @@ Eg:
 3. Always return the index of the two values who have a minimal difference. Eg prefer the values 2, 2 over 1, 3 over 0, 4 for the sum of 4.
 
 
-## Prime factorization (primes provided) [code]
+### Prime factorization (primes provided) [code]
 
 Source file: `factor.go`
 Function def: `Factor(primes []int, number int) []int`
