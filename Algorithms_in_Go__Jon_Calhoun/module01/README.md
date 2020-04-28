@@ -240,7 +240,7 @@ FizzBuzz(15)
 ```
 
 
-### Decimal to another base [code]  <====
+### Decimal to another base [code]  DONE
 
 Source file: `dec_to_base.go`
 Function def: `DecToBase(dec, base int) string`
@@ -311,7 +311,7 @@ DecToBase(14, 16) // "E"
 DecToBase(17, 16) // "11"
 ```
 
-### Another base to decimal [code]
+### Another base to decimal [code]   <=========
 
 Source file: `base_to_dec.go`
 Function def: `BaseToDec(value string, base int) int`
