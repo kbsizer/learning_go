@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://eryb.space/2020/05/27/diving-into-go-by-building-a-cli-application.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Eryb's Space</title>
+  <meta name="description" content="My space to share technical knowledge with the world.">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script type="text/javascript" async="" src="./Building_a_go_cli_using_only_the_standard_library_files/analytics.js.download"></script><script async="" src="./Building_a_go_cli_using_only_the_standard_library_files/js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "UA-167747966-1");
+  </script>
+
+  <link rel="stylesheet" href="./Building_a_go_cli_using_only_the_standard_library_files/css2">
+  <link rel="stylesheet" href="./Building_a_go_cli_using_only_the_standard_library_files/bootstrap.min.css">
+  <link rel="stylesheet" href="./Building_a_go_cli_using_only_the_standard_library_files/fruity.css">
+  <link rel="stylesheet" href="./Building_a_go_cli_using_only_the_standard_library_files/main.css">
+</head>
+<body data-gr-c-s-loaded="true">
+    <div class="container">
+  <div class="row">
+    <div class="col-lg-3"><aside class="sidebar">
+  <h1 class="title">
+    <a href="https://eryb.space/">Eryb's Space<span id="loader"></span></a>
+  </h1>
+  <hr>
+  <!-- <div class="tags-list">
+    
+    <span class="post-tag">Go</span>
+    
+  </div>
+  <hr /> -->
+  <footer>
+    <div class="email"><span>💌&nbsp;eryb[at]protonmail.com</span></div>
+  </footer>
+</aside>
+</div>
+    <div class="col-lg-9">
+      <h1 class="post-title">Diving into Go by building a CLI application</h1>
+      <div class="post-meta">
+        <span class="post-date">- 27 May 2020</span>
+        
+        <span class="post-tag">Go</span>
+        
+      </div>
+      <hr>
+      <article class="post-content">
+        <p>You have wrapped your head around the Go syntax and practised them one by one, however you won’t feel comfortable writing applications in Go unless you build one.</p>
+
+<p>In this blog post we’ll build a CLI application in Go, which we’ll call <strong>go-grab-xkcd</strong>.
+This application fetches comics from <a href="https://xkcd.com/">XKCD</a> and provides you with various options through command-line arguments.</p>
+
+<p>We’ll use no external dependencies and will build the entire app using only the Go standard library.</p>
+
+<p>The application idea looks silly but the aim is to get comfortable writing production (sort of) code in Go and not to get acquired by Google.</p>
+<h6 id="there-is-also-a-bash-bonus-at-the-end">There is also a Bash Bonus at the end.</h6>
+<p><em>Note: This post assumes that the reader is familiar with Go syntax and terminologies and is somewhere between a beginner and an intermediate.</em></p>
+
+<p>Let’s first run the application and see it in action-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go-grab-xkcd <span class="nt">--help</span>
+
+Usage of go-grab-xkcd:
+  <span class="nt">-n</span> int
+        Comic number to fetch <span class="o">(</span>default latest<span class="o">)</span>
+  <span class="nt">-o</span> string
+        Print output <span class="k">in </span>format: text/json <span class="o">(</span>default <span class="s2">"text"</span><span class="o">)</span>
+  <span class="nt">-s</span>    Save image to current directory
+  <span class="nt">-t</span> int
+        Client <span class="nb">timeout </span><span class="k">in </span>seconds <span class="o">(</span>default 30<span class="o">)</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go-grab-xkcd <span class="nt">-n</span> 323
+
+Title: Ballmer Peak
+Comic No: 323
+Date: 1-10-2007
+Description: Apple uses automated schnapps IVs.
+Image: https://imgs.xkcd.com/comics/ballmer_peak.png
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go-grab-xkcd <span class="nt">-n</span> 323 <span class="nt">-o</span> json
+<span class="o">{</span>
+  <span class="s2">"title"</span>: <span class="s2">"Ballmer Peak"</span>,
+  <span class="s2">"number"</span>: 323,
+  <span class="s2">"date"</span>: <span class="s2">"1-10-2007"</span>,
+  <span class="s2">"description"</span>: <span class="s2">"Apple uses automated schnapps IVs."</span>,
+  <span class="s2">"image"</span>: <span class="s2">"https://imgs.xkcd.com/comics/ballmer_peak.png"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You can try rest of the options by downloading and running the application for your computer.</p>
+
+<p>After the end of this tutorial you’ll be comfortable with the following topics-</p>
+
+<ol>
+  <li>Accepting command line arguments</li>
+  <li>Interconversion between JSON and Go Structs</li>
+  <li>Making API calls</li>
+  <li>Creating files (Downloading and saving from Internet)</li>
+  <li>String Manipulation</li>
+</ol>
+
+<p>Below is the project structure-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>tree go-grab-xkcd
+go-grab-xkcd
+├── client
+│   └── xkcd.go
+└── model
+    └── comic.go
+├── main.go
+└── go.mod
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">go.mod</code> - <em>Go Modules</em> file used in Go for package management</li>
+  <li><code class="language-plaintext highlighter-rouge">main.go</code> - Main entrypoint of the application</li>
+  <li><code class="language-plaintext highlighter-rouge">comic.go</code> - Go representation of the data as a <code class="language-plaintext highlighter-rouge">struct</code> and operations on it</li>
+  <li><code class="language-plaintext highlighter-rouge">xkcd.go</code> - xkcd client for making HTTP calls to the API, parsing response and saving to disk</li>
+</ul>
+
+<h2 id="1-initialize-the-project">1: Initialize the project</h2>
+
+<p>Create a <code class="language-plaintext highlighter-rouge">go.mod</code> file-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go mod init
+</code></pre></div></div>
+
+<p>This will help in package management (think package.json in JS).</p>
+
+<h2 id="2-xkcd-api">2: xkcd API</h2>
+
+<p>xkcd is amazing, you don’t require any signups or access keys to use their API.
+Open the xkcd <a href="https://xkcd.com/json.html">API “documentation”</a> and you’ll find that there are 2 endpoints-</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">http://xkcd.com/info.0.json</code> - GET latest comic</li>
+  <li><code class="language-plaintext highlighter-rouge">http://xkcd.com/614/info.0.json</code> - GET specific comic by comic number</li>
+</ol>
+
+<p>Following is the JSON response from these endpoints-</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"num"</span><span class="p">:</span><span class="w"> </span><span class="mi">2311</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"month"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"day"</span><span class="p">:</span><span class="w"> </span><span class="s2">"25"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"year"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2020"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Confidence Interval"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"alt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The worst part is that's the millisigma interval."</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"img"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://imgs.xkcd.com/comics/confidence_interval.png"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"safe_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Confidence Interval"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"link"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"news"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"transcript"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Relevant <a href="https://xkcd.com/1481/">xkcd</a></p>
+
+<h2 id="2-create-model-for-the-comic">2: Create model for the Comic</h2>
+
+<p>Based on the above JSON response, we create a <code class="language-plaintext highlighter-rouge">struct</code> called <code class="language-plaintext highlighter-rouge">ComicResponse</code> in <code class="language-plaintext highlighter-rouge">comic.go</code> inside the <code class="language-plaintext highlighter-rouge">model</code> package</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">ComicResponse</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Month</span>      <span class="kt">string</span> <span class="s">`json:"month"`</span>
+	<span class="n">Num</span>        <span class="kt">int</span>    <span class="s">`json:"num"`</span>
+	<span class="n">Link</span>       <span class="kt">string</span> <span class="s">`json:"link"`</span>
+	<span class="n">Year</span>       <span class="kt">string</span> <span class="s">`json:"year"`</span>
+	<span class="n">News</span>       <span class="kt">string</span> <span class="s">`json:"news"`</span>
+	<span class="n">SafeTitle</span>  <span class="kt">string</span> <span class="s">`json:"safe_title"`</span>
+	<span class="n">Transcript</span> <span class="kt">string</span> <span class="s">`json:"transcript"`</span>
+	<span class="n">Alt</span>        <span class="kt">string</span> <span class="s">`json:"alt"`</span>
+	<span class="n">Img</span>        <span class="kt">string</span> <span class="s">`json:"img"`</span>
+	<span class="n">Title</span>      <span class="kt">string</span> <span class="s">`json:"title"`</span>
+	<span class="n">Day</span>        <span class="kt">string</span> <span class="s">`json:"day"`</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can use the <a href="https://mholt.github.io/json-to-go/">JSON-to-Go</a> tool to automatically generate the struct from JSON.</p>
+
+<p>Also create another struct which will be used to output data from our application.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Comic</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Title</span>       <span class="kt">string</span> <span class="s">`json:"title"`</span>
+	<span class="n">Number</span>      <span class="kt">int</span>    <span class="s">`json:"number"`</span>
+	<span class="n">Date</span>        <span class="kt">string</span> <span class="s">`json:"date"`</span>
+	<span class="n">Description</span> <span class="kt">string</span> <span class="s">`json:"description"`</span>
+	<span class="n">Image</span>       <span class="kt">string</span> <span class="s">`json:"image"`</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Add the below two methods to <code class="language-plaintext highlighter-rouge">ComicResponse</code> struct-</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// FormattedDate formats individual date elements into a single string</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">cr</span> <span class="n">ComicResponse</span><span class="p">)</span> <span class="n">FormattedDate</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s-%s-%s"</span><span class="p">,</span> <span class="n">cr</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span> <span class="n">cr</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span> <span class="n">cr</span><span class="o">.</span><span class="n">Year</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Comic converts ComicResponse that we receive from the API to our application's output format, Comic</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">cr</span> <span class="n">ComicResponse</span><span class="p">)</span> <span class="n">Comic</span><span class="p">()</span> <span class="n">Comic</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">Comic</span><span class="p">{</span>
+		<span class="n">Title</span><span class="o">:</span>       <span class="n">cr</span><span class="o">.</span><span class="n">Title</span><span class="p">,</span>
+		<span class="n">Number</span><span class="o">:</span>      <span class="n">cr</span><span class="o">.</span><span class="n">Num</span><span class="p">,</span>
+		<span class="n">Date</span><span class="o">:</span>        <span class="n">cr</span><span class="o">.</span><span class="n">FormattedDate</span><span class="p">(),</span>
+		<span class="n">Description</span><span class="o">:</span> <span class="n">cr</span><span class="o">.</span><span class="n">Alt</span><span class="p">,</span>
+		<span class="n">Image</span><span class="o">:</span>       <span class="n">cr</span><span class="o">.</span><span class="n">Img</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then add the following two methods to the <code class="language-plaintext highlighter-rouge">Comic</code> struct-</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// PrettyString creates a pretty string of the Comic that we'll use as output</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">c</span> <span class="n">Comic</span><span class="p">)</span> <span class="n">PrettyString</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="n">p</span> <span class="o">:=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span>
+		<span class="s">"Title: %s</span><span class="se">\n</span><span class="s">Comic No: %d</span><span class="se">\n</span><span class="s">Date: %s</span><span class="se">\n</span><span class="s">Description: %s</span><span class="se">\n</span><span class="s">Image: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span>
+		<span class="n">c</span><span class="o">.</span><span class="n">Title</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">Number</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">Description</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">Image</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">p</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// JSON converts the Comic struct to JSON, we'll use the JSON string as output</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">c</span> <span class="n">Comic</span><span class="p">)</span> <span class="n">JSON</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="n">cJSON</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">cJSON</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="3-setup-xkcd-client-for-making-request-parsing-response-and-saving-to-disk">3: Setup xkcd client for making request, parsing response and saving to disk</h2>
+
+<p>Create <code class="language-plaintext highlighter-rouge">xkcd.go</code> file inside the <code class="language-plaintext highlighter-rouge">client</code> package.</p>
+
+<p>First define a custom type called <code class="language-plaintext highlighter-rouge">ComicNumber</code> as an <code class="language-plaintext highlighter-rouge">int</code></p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">ComicNumber</span> <span class="kt">int</span>
+</code></pre></div></div>
+
+<p>Define constants-</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="p">(</span>
+	<span class="c">// BaseURL of xkcd</span>
+	<span class="n">BaseURL</span> <span class="kt">string</span> <span class="o">=</span> <span class="s">"https://xkcd.com"</span>
+	<span class="c">// DefaultClientTimeout is time to wait before cancelling the request</span>
+	<span class="n">DefaultClientTimeout</span> <span class="n">time</span><span class="o">.</span><span class="n">Duration</span> <span class="o">=</span> <span class="m">30</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span>
+	<span class="c">// LatestComic is the latest comic number according to the xkcd API</span>
+	<span class="n">LatestComic</span> <span class="n">ComicNumber</span> <span class="o">=</span> <span class="m">0</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Create a struct <code class="language-plaintext highlighter-rouge">XKCDClient</code>, it will be used to make requests to the API.</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// XKCDClient is the client for XKCD</span>
+<span class="k">type</span> <span class="n">XKCDClient</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">client</span>  <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Client</span>
+	<span class="n">baseURL</span> <span class="kt">string</span>
+<span class="p">}</span>
+
+<span class="c">// NewXKCDClient creates a new XKCDClient</span>
+<span class="k">func</span> <span class="n">NewXKCDClient</span><span class="p">()</span> <span class="o">*</span><span class="n">XKCDClient</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="n">XKCDClient</span><span class="p">{</span>
+		<span class="n">client</span><span class="o">:</span> <span class="o">&amp;</span><span class="n">http</span><span class="o">.</span><span class="n">Client</span><span class="p">{</span>
+			<span class="n">Timeout</span><span class="o">:</span> <span class="n">DefaultClientTimeout</span><span class="p">,</span>
+		<span class="p">},</span>
+		<span class="n">baseURL</span><span class="o">:</span> <span class="n">BaseURL</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Add the following 4 methods to <code class="language-plaintext highlighter-rouge">XKCDClient</code>-</p>
+
+<ol>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">SetTimeout()</code></p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// SetTimeout overrides the default ClientTimeout</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">hc</span> <span class="o">*</span><span class="n">XKCDClient</span><span class="p">)</span> <span class="n">SetTimeout</span><span class="p">(</span><span class="n">d</span> <span class="n">time</span><span class="o">.</span><span class="n">Duration</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">hc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="n">d</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">Fetch()</code></p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// Fetch retrieves the comic as per provided comic number</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">hc</span> <span class="o">*</span><span class="n">XKCDClient</span><span class="p">)</span> <span class="n">Fetch</span><span class="p">(</span><span class="n">n</span> <span class="n">ComicNumber</span><span class="p">,</span> <span class="n">save</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Comic</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">hc</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">hc</span><span class="o">.</span><span class="n">buildURL</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Comic</span><span class="p">{},</span> <span class="n">err</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+    <span class="k">var</span> <span class="n">comicResp</span> <span class="n">model</span><span class="o">.</span><span class="n">ComicResponse</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">NewDecoder</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="o">.</span><span class="n">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">comicResp</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Comic</span><span class="p">{},</span> <span class="n">err</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">save</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">hc</span><span class="o">.</span><span class="n">SaveToDisk</span><span class="p">(</span><span class="n">comicResp</span><span class="o">.</span><span class="n">Img</span><span class="p">,</span> <span class="s">"."</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+            <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Failed to save image!"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">comicResp</span><span class="o">.</span><span class="n">Comic</span><span class="p">(),</span> <span class="no">nil</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">SaveToDisk()</code></p>
+
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// SaveToDisk downloads and saves the comic locally</span>
+<span class="k">func</span> <span class="p">(</span><span class="n">hc</span> <span class="o">*</span><span class="n">XKCDClient</span><span class="p">)</span> <span class="n">SaveToDisk</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">savePath</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="n">resp</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">err</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+    <span class="n">absSavePath</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="n">savePath</span><span class="p">)</span>
+    <span class="n">filePath</span> <span class="o">:=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s/%s"</span><span class="p">,</span> <span class="n">absSavePath</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">Base</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+
+    <span class="n">file</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">os</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">err</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="n">file</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">Copy</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">err</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="no">nil</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">buildURL()</code></p>
+    <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">hc</span> <span class="o">*</span><span class="n">XKCDClient</span><span class="p">)</span> <span class="n">buildURL</span><span class="p">(</span><span class="n">n</span> <span class="n">ComicNumber</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="n">finalURL</span> <span class="kt">string</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">LatestComic</span> <span class="p">{</span>
+        <span class="n">finalURL</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s/info.0.json"</span><span class="p">,</span> <span class="n">hc</span><span class="o">.</span><span class="n">baseURL</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">finalURL</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s/%d/info.0.json"</span><span class="p">,</span> <span class="n">hc</span><span class="o">.</span><span class="n">baseURL</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">finalURL</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="4-connect-everything">4: Connect everything</h2>
+
+<p>Inside the <code class="language-plaintext highlighter-rouge">main()</code> function we connect all the wires-</p>
+
+<ul>
+  <li>Read command arguments</li>
+  <li>Instantiate the <code class="language-plaintext highlighter-rouge">XKCDClient</code></li>
+  <li>Fetch from API using the <code class="language-plaintext highlighter-rouge">XKCDClient</code></li>
+  <li>Output</li>
+</ul>
+
+<h5 id="read-command-arguments-">Read command arguments-</h5>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">comicNo</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span>
+    <span class="s">"n"</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">LatestComic</span><span class="p">),</span> <span class="s">"Comic number to fetch (default latest)"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">clientTimeout</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">Int64</span><span class="p">(</span>
+    <span class="s">"t"</span><span class="p">,</span> <span class="kt">int64</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">DefaultClientTimeout</span><span class="o">.</span><span class="n">Seconds</span><span class="p">()),</span> <span class="s">"Client timeout in seconds"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">saveImage</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">Bool</span><span class="p">(</span>
+    <span class="s">"s"</span><span class="p">,</span> <span class="no">false</span><span class="p">,</span> <span class="s">"Save image to current directory"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">outputType</span> <span class="o">:=</span> <span class="n">flag</span><span class="o">.</span><span class="n">String</span><span class="p">(</span>
+    <span class="s">"o"</span><span class="p">,</span> <span class="s">"text"</span><span class="p">,</span> <span class="s">"Print output in format: text/json"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">flag</span><span class="o">.</span><span class="n">Parse</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h5 id="instantiate-the-xkcdclient">Instantiate the <code class="language-plaintext highlighter-rouge">XKCDClient</code></h5>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">xkcdClient</span> <span class="o">:=</span> <span class="n">client</span><span class="o">.</span><span class="n">NewXKCDClient</span><span class="p">()</span>
+<span class="n">xkcdClient</span><span class="o">.</span><span class="n">SetTimeout</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="o">*</span><span class="n">clientTimeout</span><span class="p">)</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h5 id="fetch-from-api-using-the-xkcdclient">Fetch from API using the <code class="language-plaintext highlighter-rouge">XKCDClient</code></h5>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">comic</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">xkcdClient</span><span class="o">.</span><span class="n">Fetch</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">ComicNumber</span><span class="p">(</span><span class="o">*</span><span class="n">comicNo</span><span class="p">),</span> <span class="o">*</span><span class="n">saveImage</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h5 id="output">Output</h5>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">*</span><span class="n">outputType</span> <span class="o">==</span> <span class="s">"json"</span> <span class="p">{</span>
+    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">comic</span><span class="o">.</span><span class="n">JSON</span><span class="p">())</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">comic</span><span class="o">.</span><span class="n">PrettyString</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Run the program as follows-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go run main.go <span class="nt">-n</span> 323 <span class="nt">-o</span> json
+</code></pre></div></div>
+
+<p>Or build it as an executable binary for your laptop and then run-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>go build <span class="nb">.</span>
+<span class="nv">$ </span>./go-grab-xkcd <span class="nt">-n</span> 323 <span class="nt">-s</span> <span class="nt">-o</span> json
+</code></pre></div></div>
+
+<p>Find the complete source code in the Github Repository - <a href="https://github.com/erybz/go-grab-xkcd">go-grab-xkcd</a></p>
+
+<h2 id="bash-bonus">Bash Bonus</h2>
+
+<p>Download multiple comics serially by using this simple shell magic-</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..10<span class="o">}</span><span class="p">;</span> <span class="k">do</span> ./go-grab-xkcd <span class="nt">-n</span> <span class="nv">$i</span> <span class="nt">-s</span><span class="p">;</span> <span class="k">done</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The above shell code simple calls our <code class="language-plaintext highlighter-rouge">go-grab-xkcd</code> command in a <code class="language-plaintext highlighter-rouge">for</code> loop, and the <code class="language-plaintext highlighter-rouge">i</code> value is substituted as comic number since xkcd uses serial integers as comic number/ID.</p>
+
+      </article>
+    </div>
+  </div>
+</div>
+
+  
+
+</body></html>

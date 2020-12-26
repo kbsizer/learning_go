@@ -170,9 +170,9 @@ ok      algo/module01   0.396s
 
 ## Module 2: Sorting Algorithms
 
-## Bubble Sort
+## [Bubble Sort](https://www.calhoun.io/lets-learn-algorithms-an-intro-to-bubble-sort/)
 
-## Insertion Sort
+## [Binary Search](https://www.calhoun.io/lets-learn-algorithms-an-intro-to-binary-search/)
 
 ## x
 
@@ -181,6 +181,23 @@ ok      algo/module01   0.396s
 
 
 ------------------------------
+
+## Appendix: Obtaining and using the `gotest` test colorizer
+
+```bash
+$ cd /c/Go_Projects/learning_go/testing
+$ gotest
+bash: gotest: command not found
+
+$ go get -u github.com/rakyll/gotest
+
+$ gotest         # run all tests found in current folder
+Hello, world
+The hypotenuse of a right triangle with legs 10 feet long is 14.142136 feet.
+The average of 75, 82 and 98 is 85.000000.
+
+$ gotest -v      # show successful tests in green; failing tests in red
+```
 
 ## Appendix: Running specific tests
 
@@ -201,12 +218,40 @@ ok      algo/module01   0.511s
 
 More `-run` examples...
 
-```go test -run &#39;&#39;      # Run all tests.
+```bash
 go test -run ''      # Run all tests.
 go test -run Foo     # Run top-level tests matching "Foo", such as "TestFooBar".
 go test -run Foo/A=  # For top-level tests matching "Foo", run subtests matching "A=".
 go test -run /A=1    # For all top-level tests, run subtests matching "A=1".
 ```
+
+Listing test methods...
+
+```bash
+$ go test -list .
+Test_main
+TestGetHello
+TestHypotenuse
+TestAverage
+ok      _/C_/Go_Projects/learning_go/testing
+```
+
+Notes
+
+* `go test` recompiles each package along with any files with names matching the file pattern `*_test.go`
+* The `*_test.go` files can contain test functions, benchmark functions, and example functions. See `go help testfunc` for more.
+* Each listed package causes the execution of a separate test binary.
+* Files whose names begin with `_` (including `_test.go`) or `.` are ignored.
+* Test files that declare a package with the suffix `_test` will be compiled as a separate package, and then linked and run with the main test binary.
+* `go` will ignore a directory named `testdata`, making it available to hold ancillary data needed by the tests.
+
+For more info
+
+```bash
+$ go help test
+```
+
+
 
 For more details, see: https://golang.org/pkg/testing/
 

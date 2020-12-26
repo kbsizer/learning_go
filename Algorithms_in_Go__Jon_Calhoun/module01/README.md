@@ -311,7 +311,7 @@ DecToBase(14, 16) // "E"
 DecToBase(17, 16) // "11"
 ```
 
-### Another base to decimal [code]   <=========
+### Another base to decimal [code]   DONE
 
 Source file: `base_to_dec.go`
 Function def: `BaseToDec(value string, base int) int`
@@ -338,8 +338,14 @@ BaseToDec("E", 16) // 14
 BaseToDec("11", 16) // 17
 ```
 
+### [SPECIAL TOPIC] Debugging Go Tests Using Delve and VSCode  <=========
 
-### Any base to any base [code]
+Fiddled around with creating and modifying JSON launch configurations, but no real progress.  
+
+- [ ]  How to create launch configurations in VS Code?
+- [ ] How to debug tests?  Both `$ go test` and `$ gotest -run=<functionName>`?
+
+### Any base to any base [code]  DONE
 
 Source file: `base_to_base.go`
 Function def: `BaseToBase(value string, base, newBase int) string`
@@ -353,7 +359,7 @@ BaseToBase("E", 16, 2) // "1110"
 BaseToBase("8831A383B", 12, 16) // "DEADBEEF"
 ```
 
-### Find two that sum [code]
+### Find two that sum [code]  DONE
 
 Source file: `find_two_that_sum.go`
 Function def: `FindTwoThatSum(numbers []int, sum int) (int, int)`
@@ -390,7 +396,7 @@ Eg:
 3. Always return the index of the two values who have a minimal difference. Eg prefer the values 2, 2 over 1, 3 over 0, 4 for the sum of 4.
 
 
-### Prime factorization (primes provided) [code]
+### Prime factorization (primes provided) [code]  DONE
 
 Source file: `factor.go`
 Function def: `Factor(primes []int, number int) []int`
@@ -417,7 +423,7 @@ Factor([3,5], 720) // []int{3,3,5,16}
 Factor([], 4) // []int{4}
 ```
 
-## 14 - Fibonacci sequence [code]
+### Fibonacci sequence [code]   DONE
 
 Source file: `fibonacci.go`
 Function def: `Fibonacci(n int) int `
@@ -499,7 +505,7 @@ A = 100, B = 9:
 
 A = 100, B = 8:
   100 = [2,2,5,5]
-  9 = [2,2,2]
+  8 = [2,2,2]
   GCD = [2,2] = 4
 ```
 
