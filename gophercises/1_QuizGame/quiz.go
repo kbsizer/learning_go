@@ -20,8 +20,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spf13/pflag" //  replacement for Go's flag package, implementing POSIX style flags
-	"gopkgs.sas.com/zlog"    // level-based logger based on zerolog; $ go get gopkgs.sas.com/zlog
+	flag "github.com/spf13/pflag" //  replacement for Go's flag package, implementing POSIX style flags
+	zlog "github.com/rs/zerolog/log"    // level-based logger based on zerolog; $ go get gopkgs.sas.com/zlog
 )
 
 var logger = zlog.L()
@@ -36,15 +36,15 @@ func main() {
 
 	// process command line args
 	var showHelp bool
-	pflag.BoolVarP(&showHelp, "help", "h", false, "Display usage help")
+	flag.BoolVarP(&showHelp, "help", "h", false, "Display usage help")
 	var csvFilename string
-	pflag.StringVarP(&csvFilename, "file", "f", "problems.csv", "Comma-separated file of question-answer pairs")
+	flag.StringVarP(&csvFilename, "file", "f", "problems.csv", "Comma-separated file of question-answer pairs")
 	var verbose bool
-	pflag.BoolVarP(&verbose, "verbose", "v", false, "Verbose mode; log actions in great detail")
+	flag.BoolVarP(&verbose, "verbose", "v", false, "Verbose mode; log actions in great detail")
 	var version1 bool
-	pflag.BoolVarP(&version1, "version1", "1", false, "Run version one of the quiz app (no timer)")
+	flag.BoolVarP(&version1, "version1", "1", false, "Run version one of the quiz app (no timer)")
 
-	pflag.Parse()
+	flag.Parse()
 	if showHelp {
 		//NOTE: All this might be overkill because pflag can generate the bulk it (VERIFY THIS)
 		logger.Fatal("Gophercise 1 - Quiz Game\n\n" +
@@ -81,7 +81,7 @@ func main() {
 		}
 		questionsAndAnswers = append(questionsAndAnswers, questionAnswer{row[0], row[1]})
 	}
-	questionCount := len(questionsAndAnswers)
+	var questionCount := len(questionsAndAnswers)
 	if verbose {
 		logger.Println("Read", questionCount, "questions from", csvFilename, ". Contents of questionsAndAnswers:\n", questionsAndAnswers)
 	}

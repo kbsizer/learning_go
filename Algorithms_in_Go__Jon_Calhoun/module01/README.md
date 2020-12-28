@@ -6,6 +6,20 @@
 
 
 
+```bash
+# Using standard go tooling
+$ go test                  # run all tests
+$ go test -list .          # list all tests in the current directory 
+# To download/install the gotest colorizer
+$ go get -u github.com/rakyll/gotest
+# Using gotest colorizer
+$ gotest                   # run all tests, only echo failures
+$ gotest -v                # run all tests, echo successes (in green) and failures (in red)
+$ gotest -run=NumInList    # run all tests whose name contains "NumInList"  
+```
+
+
+
 ## Intro
 
 Welcome!
@@ -459,7 +473,7 @@ Fibonacci(7) // 13
 Fibonacci(14) // 377
 ```
 
-## Greatest common divisor [code]
+### Greatest common divisor [code]     DONE
 
 Source file: `gcd.go`
 Function def: `GCD(a, b int) int`
