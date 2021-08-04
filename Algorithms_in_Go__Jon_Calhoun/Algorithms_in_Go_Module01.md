@@ -1,4 +1,4 @@
-# Ken's Notes for *Algorithms in Go by Jon Calhoun*
+# Ken's Notes for *<u>Algorithms in Go, Module 01</u> by Jon Calhoun*
 
 [TOC]
 
@@ -163,18 +163,6 @@ ok      algo/module01   0.396s
 ## Greatest common divisor (GCD)
 
 ## stdin and stdout
-
-
-
-------------------
-
-## Module 2: Sorting Algorithms
-
-## [Bubble Sort](https://www.calhoun.io/lets-learn-algorithms-an-intro-to-bubble-sort/)
-
-## [Binary Search](https://www.calhoun.io/lets-learn-algorithms-an-intro-to-binary-search/)
-
-## x
 
 
 
